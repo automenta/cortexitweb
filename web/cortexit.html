@@ -2,7 +2,6 @@
 
 <script type='text/javascript' src='%%STATICHOST%%/animator.js'></script>
 <script type='text/javascript' src='%%STATICHOST%%/yboss-lib.js'></script>
-<script type='text/javascript' src='%%STATICHOST%%/jquery.dropdownPlain.js'></script>
 
 <link id="themeCSS" rel="stylesheet" type="text/css"  />
 <script>
@@ -60,14 +59,14 @@
         content.innerHTML = line;
 
         var status = document.getElementById("Status");
-        status.innerHTML = (f+1) + '/' + cframes.length;
+        status.innerHTML = '<a class="tooltipAbove">' + (f+1) + '/' + cframes.length + '<span>Mousewheel to go previous and next</span></a>';
 
         var prev = document.getElementById("_Prev");
         if (f == 0) {
             prev.innerHTML = '&nbsp;';
         }
         else {
-            prev.innerHTML = '<button onClick="goPrevious();">&lt;----</button>';
+            prev.innerHTML = '<a href="javascript:goPrevious()"><img src="%%STATICHOST%%/icons/left.svg" height="32px" width="32px"/></a>';
         }
 
         var next = document.getElementById("_Next");
@@ -75,7 +74,8 @@
             next.innerHTML = '&nbsp;';
         }
         else {
-            next.innerHTML = '<button onClick="goNext();">----&gt;</button>';
+            //next.innerHTML = '<button onClick="goNext();">----&gt;</button>';
+            next.innerHTML = '<a href="javascript:goNext()"><img src="%%STATICHOST%%/icons/right.svg" height="32px" width="32px"/></a>';
         }
         updateFonts();
         
@@ -285,10 +285,10 @@
 
         //setup help
         if (localStorage["hideHelp"] == 1) {
-            hideHelp();
+            //hideHelp();
         }
         else {
-            showHelp();
+            //showHelp();
         }
 
 //        window.onresize = function() {
@@ -354,30 +354,7 @@
         );
 
     }
-    var helpShowing = false;
 
-    function toggleHelp() {
-        if (helpShowing) {
-            hideHelp();
-        }
-        else {
-            showHelp();
-        }
-    }
-
-    function hideHelp() {
-        helpShowing = false;
-        var help = document.getElementById("_Help");
-        help.style.display = 'none';
-        localStorage["hideHelp"] = 1;
-    }
-    
-    function showHelp() {
-        helpShowing = true;
-        var help = document.getElementById("_Help");
-        help.style.display = '';
-        localStorage["hideHelp"] = 0;
-    }
 
     function onControlMouseOver() {
         var control = document.getElementById("_Control");
@@ -452,23 +429,22 @@
 
 <body onload="setup();">
     
-    <div class="menu">
+    <div id="_Top" class="menu">
             
         <ul>
-            <li><a href="#">Go...</a></li>
-            <li><a href="javascript:toggleSpeech()">Speak</a></li>
-            <li><a href="#">Translate</a>
-            <li><a href="#">Theme</a>
+            <li><a href="#" class="tooltip"><img width="48px" height="48px" src="%%STATICHOST%%/icons/link.svg" alt="Go..."/><span>Go...</span></a></li>
+            <li><a href="javascript:toggleSpeech()" class="tooltip"><img width="48px" height="48px" src="%%STATICHOST%%/icons/speak.svg" alt="Speak"/><span>Speak</span></a></li>
+            <li><a href="#" class="tooltip"><img width="48px" height="48px" src="%%STATICHOST%%/icons/earth.svg" alt="Translate"/><span>Translate</span></a>
+            <li><a href="#" class="tooltip"><img width="48px" height="48px" src="%%STATICHOST%%/icons/colors.svg" title="Theme"/><span>Theme</span></a>
                 <ul>
                     <li><a href="javascript:setTheme('default-black')">White on Black</a></li>
                     <li><a href="javascript:setTheme('default-white')">Black on White</a></li>
                     <li><a href="javascript:setTheme('terminal-green')">Terminal Green</a></li>
                 </ul>
             </li>
-            <li><a href="javascript:addImagesForSelection();">Images</a></li>
-            <li><a href="">Edit</a></li>
-            <li><a href="">Info</a></li>
-            <li><a href="">Help</a></li>
+            <li><a href="javascript:addImagesForSelection();" class="tooltip"><img width="48px" height="48px" src="%%STATICHOST%%/icons/picture.svg" alt="Images"/><span>Images</span></a></li>
+            <li><a href="" class="tooltip"><img width="48px" height="48px" src="%%STATICHOST%%/icons/edit.svg" alt="Edit and Share"/><span>Edit and Share</span></a></li>
+            <li><a href="" class="tooltip"><img width="48px" height="48px" src="%%STATICHOST%%/icons/question.svg" alt="Help"/><span>Help</span></a></li>
         </ul>
     </div>
 		
@@ -482,7 +458,7 @@
         </div>
     </div>
 
-    <div id="_Bottom" style="width: 48%; float: right">
+    <div id="_Bottom" style="">
         <table width="100%" id="_Control" border="0" onmouseout="onControlMouseOut();" onmouseover="onControlMouseOver();" oncontextmenu="closeWindow(this); return false;">
             <tr>
                 <td width="10%" align="left" id="_Prev">
@@ -498,13 +474,13 @@
                     &nbsp;
                 </td>
                 <td width="10%" align="left">
-                    <button onclick="fontSmaller()">-</button>
+                    <a href="javascript:fontSmaller()"><img src="%%STATICHOST%%/icons/minus.svg" height="32px" width="32px" title="Smaller Font"/></a>
                 </td>
-                <td width="25%" align="center" id="_Font">
-                    <span id="_Font">&nbsp; Abc &nbsp;</span>
+                <td width="25%" align="center" id="_Font" >                    
+                    <a class="tooltipAbove">&nbsp; Abc &nbsp;<span>Mousewheel to adjust font size</span></a>
                 </td>
                 <td width="10%" align="right">
-                    <button onclick="fontLarger()">+</button>
+                    <a href="javascript:fontLarger()"><img src="%%STATICHOST%%/icons/plus.svg" height="32px" width="32px" title="Larger Font"/></a>
                 </td>
             </tr>
         </table>

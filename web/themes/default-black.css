@@ -1,6 +1,9 @@
 #_Panel {
-    color: white;
+    color: #ddd;
     background-color: black;
+}
+a {
+    color: #fff;
 }
 
 .ContentHighlighted {
@@ -10,13 +13,17 @@
 
 body {
    margin: 1%;
-   background-color: #888;
+   background-color: #333;
 }
 
-Status {
+
+#Status {
     color: white;
 }
 
-_Font {
+#_Font {
     color: white;
+}
+#_Bottom {
+    background-color: transparent;
 }

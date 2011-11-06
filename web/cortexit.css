@@ -16,7 +16,7 @@ root {
 }
 
 body {
-    margin: 1%;
+    margin: 0%;
 }
 
 .smallLabel {
@@ -24,18 +24,21 @@ body {
 }
 
 #_Panel {
+    position: absolute;
     text-align:left;
     font-family:Arial,Sans;
     color: white;
     background-color: black;
-    width:100%;
+    width:98%;
     height: 88%;
+    left:1%;
+    top:6%;
     overflow: auto;
 }
 
 
 #_Content, #_TextZoom {
-    margin: 2%;
+    margin: 1%;
 }
 
 #_Images {
@@ -50,17 +53,16 @@ body {
 #_Font {
     font-size: 30px;
     font-family: Arial, Sans;
+    -webkit-user-select:none;
 }
 
 #_Prev {
-    font-size: 30px;
     color: black;
     font-family: Arial, Sans;
     -webkit-user-select:none;
 }
 
 #_Next {
-    font-size: 30px;
     color: black;
     font-family: Arial, Sans;
     -webkit-user-select:none;
@@ -74,19 +76,37 @@ body {
 
 a, a.visited {
     color: black;
-    font-size:30px;
     font-family: Arial, Sans;
 }
 
 #_Bottom {
     overflow: auto;
     color: white;
-    background-color: #333;
+    position: absolute;
+    bottom: 0;
+    right: 1%;
+    width: 48%; 
+    
 }
+
+#_Top {
+    position:absolute;
+    top:0;
+    left:1%;
+}
+
+.menu{
+    border:none;
+    border:0px;
+    margin:0px;
+    padding:0px;
+    font-size:14px;
+    font-weight:bold;
+}
+
 
 #_Control {
     font-family: Arial, Sans;
-    background-color: #333;
 }
 
 a {
@@ -95,15 +115,6 @@ a {
 
 
 
-.menu{
-    border:none;
-    border:0px;
-    margin:0px;
-    padding:0px;
-    font: 67.5% "Lucida Sans Unicode", "Bitstream Vera Sans", "Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica, sans-serif;
-    font-size:14px;
-    font-weight:bold;
-}
 .menu ul{
     background: transparent;
     height:35px;
@@ -179,3 +190,9 @@ a {
     clear:left;
 }	
 
+a:hover {background:#ffffff; text-decoration:none;} /*BG color is a must for IE6*/
+a.tooltip span {display:none; padding:2px 3px; margin-left:-20px; margin-top: 40px; width:130px; z-index: 400;}
+a.tooltip:hover span{display:inline; position:absolute; background:#ffffff; border:1px solid #cccccc; color:#6c6c6c;}
+
+a.tooltipAbove span {display:none; padding:2px 3px; margin-left:-20px; margin-top: -40px; width:130px; font-size: 15px; }
+a.tooltipAbove:hover span{display:inline; position:absolute; background:#ffffff; border:1px solid #cccccc; color:#6c6c6c;}
