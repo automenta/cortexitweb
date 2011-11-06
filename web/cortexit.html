@@ -1,0 +1,518 @@
+<link rel="stylesheet" type="text/css" href="%%STATICHOST%%/cortexit.css" />
+
+<script type='text/javascript' src='%%STATICHOST%%/animator.js'></script>
+<script type='text/javascript' src='%%STATICHOST%%/yboss-lib.js'></script>
+<script type='text/javascript' src='%%STATICHOST%%/jquery.dropdownPlain.js'></script>
+
+<link id="themeCSS" rel="stylesheet" type="text/css"  />
+<script>
+    YBOSS.appId = 'u9Mq95bV34HGuu4H5vdU1gBax96supTNuvCvqrSisdoGHy4TW21foDbILY0CFzs-';
+    //For application entrypoint -> http://github.com/automenta/corexit
+
+    var defaultTheme = 'default-black';
+    var minFrameLength = 8;
+    var pageurl;
+
+    var fontSize = 60;
+    var text;
+    var cframes = [];
+    var currentFrame;
+    var speechEnabled = false;
+
+    function enableSpeech(line) {
+        speechEnabled = true;
+
+        var speech = document.getElementById("_Speech");
+        var speechLine = line.replace("&nbsp;", " ");
+        var speechLineEncoded = encodeURIComponent(speechLine);
+        var speechURL = 'http://translate.google.com/translate_tts?q=' + speechLineEncoded;
+        speech.innerHTML = '<iframe src="' + speechURL + '" width="200px" height="80px"></iframe>';
+    }
+    
+    function disableSpeech() {
+        speechEnabled = false;
+        var speech = document.getElementById("_Speech");
+        speech.innerHTML = '';
+    }
+
+    function toggleSpeech() {
+        if (speechEnabled == true) {
+            disableSpeech();
+        }
+        else {
+            enableSpeech(cframes[currentFrame]);
+        }
+    }
+
+    function showFrame(f) {
+        
+        disableSpeech();
+        clearImages();
+
+        var content = document.getElementById("_Content");
+        if (cframes.length < 2) {
+            content = document.getElementById("_TextZoom");
+        }
+        content.style.opacity = 0;
+        
+
+        var line = cframes[f];
+        content.innerHTML = line;
+
+        var status = document.getElementById("Status");
+        status.innerHTML = (f+1) + '/' + cframes.length;
+
+        var prev = document.getElementById("_Prev");
+        if (f == 0) {
+            prev.innerHTML = '&nbsp;';
+        }
+        else {
+            prev.innerHTML = '<button onClick="goPrevious();">&lt;----</button>';
+        }
+
+        var next = document.getElementById("_Next");
+        if (f == cframes.length-1) {
+            next.innerHTML = '&nbsp;';
+        }
+        else {
+            next.innerHTML = '<button onClick="goNext();">----&gt;</button>';
+        }
+        updateFonts();
+        
+        var ex8 = new Animator(
+            {
+                duration: 400,
+                interval: 40,
+                onComplete: function() {
+                }
+            }
+        ).addSubject(
+            new NumericalStyleSubject(
+                content.id,
+                "opacity",
+                0.1,
+                1.0)
+        );
+        ex8.toggle();
+
+    }
+
+    function goPrevious() {
+        if (cframes.length < 2) {
+            return;
+        }
+
+        currentFrame--;
+        if (currentFrame < 0) currentFrame = 0;
+        else
+            showFrame(currentFrame);
+    }
+
+    function goNext() {
+        if (cframes.length < 2)
+            return;
+
+        currentFrame++;
+        if (currentFrame > cframes.length-1)
+            currentFrame = cframes.length-1;
+        else
+            showFrame(currentFrame);
+    }
+
+    function updateFonts() {
+        var content = document.getElementById("_Content");
+        var textzoom = document.getElementById("_TextZoom");
+
+        content.style.fontSize = fontSize + "px";
+        textzoom.style.fontSize = content.style.fontSize;
+        
+        var e = content.getElementsByTagName("a");
+        for (var i = 0; i < e.length; i++) {
+            e[i].style.fontSize = content.style.fontSize;
+        }        
+    }
+
+    function fontLarger() {
+        fontSize+=5;
+        
+        updateFonts();
+    }
+
+    function fontSmaller() {
+        fontSize-=5;
+        if (fontSize < 1) fontSize = 1;
+
+        updateFonts();
+    }
+
+    function addFrame(content) {
+        cframes.push(content);
+
+    }
+
+    function onFrameSpin(e) {
+        var nDelta = 0;
+        if (!e) { // For IE, access the global (window) event object
+            e = window.event;
+        }
+        // cross-bowser handling of eventdata to boil-down delta (+1 or -1)
+        if ( e.wheelDelta ) { // IE and Opera
+            nDelta= e.wheelDelta;
+            if ( window.opera ) {  // Opera has the values reversed
+                nDelta= -nDelta;
+            }
+        }
+        else if (e.detail) { // Mozilla FireFox
+            nDelta= -e.detail;
+        }
+
+        if (nDelta < 0) {
+            //HandleMouseSpin( 1, e.clientX, e.clientY );
+            goPrevious();
+        }
+        if (nDelta > 0) {
+            //HandleMouseSpin( -1, e.clientX, e.clientY );
+            goNext();
+        }
+
+        if ( e.preventDefault ) {  // Mozilla FireFox
+            e.preventDefault();
+        }
+        e.returnValue = false;  // cancel default action
+    }
+    
+
+    //TODO find a way to combine with previous function
+    function onFontSpin(e) {
+        var nDelta = 0;
+        if (!e) { // For IE, access the global (window) event object
+            e = window.event;
+        }
+        // cross-bowser handling of eventdata to boil-down delta (+1 or -1)
+        if ( e.wheelDelta ) { // IE and Opera
+            nDelta= e.wheelDelta;
+            if ( window.opera ) {  // Opera has the values reversed
+                nDelta= -nDelta;
+            }
+        }
+        else if (e.detail) { // Mozilla FireFox
+            nDelta= -e.detail;
+        }
+        if (nDelta > 0) {
+            //HandleMouseSpin( 1, e.clientX, e.clientY );
+            fontLarger();
+        }
+        if (nDelta < 0) {
+            //HandleMouseSpin( -1, e.clientX, e.clientY );
+            fontSmaller();
+        }
+        if ( e.preventDefault ) {  // Mozilla FireFox
+            e.preventDefault();
+        }
+        e.returnValue = false;  // cancel default action
+    }
+
+//    var skipNextSizeStore = true;
+
+//    function restoreWindowPosition() {
+//        chrome.windows.getCurrent(function(w) {
+//            var l = localStorage["windowDimensions"];
+//            alert('restore: ' + l);
+//            if (l != undefined) {
+//                w.moveTo(l[0], l[1]);
+////                w.left = l[0];
+////                w.top = l[1];
+//                w.width = l[2];
+//                w.height = l[3];
+//            }
+//            skipNextSizeStore = true;
+//        });
+//    }
+    
+//    function storeWindowPosition() {
+//        chrome.windows.getCurrent(function(w) {
+//            localStorage["windowDimensions"] = [ w.left, w.top, w.width, w.height ];
+//            alert('store: ' + localStorage["windowDimensions"]);
+//        });
+//    }
+//
+    function closeWindow(event) {
+            //Try both methods of hiding it
+//            storeWindowPosition();
+            window.close();
+            
+            var overlay = document.getElementById('_Overlay');
+            if (overlay!=undefined)
+                style.display='none';
+    }
+
+    function setup() {
+        var panel = document.getElementById("_Panel");
+        var control = document.getElementById("_Control");
+        var content = document.getElementById("_Content");
+        var frameSpin = document.getElementById("Status");
+        var textzoom = document.getElementById("_TextZoom");
+        var font = document.getElementById("_Font");
+
+        if (frameSpin.addEventListener) {
+            frameSpin.addEventListener('DOMMouseScroll', onFrameSpin, false);
+            frameSpin.addEventListener('mousewheel', onFrameSpin, false); // Chrome
+        }
+        else {
+            frameSpin.onmousewheel = onFrameSpin;
+        }
+        frameSpin.addEventListener('mouseover', onFrameSpinOver, false); // Chrome
+        frameSpin.addEventListener('mouseout', onFrameSpinOut, false); // Chrome
+
+        if (font.addEventListener) {
+            font.addEventListener('DOMMouseScroll', onFontSpin, false);
+            font.addEventListener('mousewheel', onFontSpin, false); // Chrome
+        }
+        else {
+            font.onmousewheel= onFontSpin;
+        }
+        font.addEventListener('mouseover', onFontSpinOver, false); // Chrome
+        font.addEventListener('mouseout', onFontSpinOut, false); // Chrome
+
+        content.style.fontSize = fontSize + "px";
+        textzoom.style.fontSize = content.style.fontSize;
+
+        //control.ondblclick = closeWindow;
+
+        //setup theme
+        var currentTheme = localStorage['theme'];
+        setTheme(currentTheme);
+
+        //setup help
+        if (localStorage["hideHelp"] == 1) {
+            hideHelp();
+        }
+        else {
+            showHelp();
+        }
+
+//        window.onresize = function() {
+//            if (!skipNextSizeStore) {
+//                storeWindowPosition();
+//            }
+//            else {
+//                skipNextSizeStore = false;
+//            }
+//        };
+
+        //storeWindowPosition();
+
+        //chrome.extension.sendRequest({'command' : 'getText'}, corexit);
+
+    }
+
+    function clearImages() {
+        var images = document.getElementById("_Images");
+        images.innerHTML = '';
+    }
+
+    function enlargeImage(element, imagesrc) {
+        element.innerHTML = '<img src=\"' + imagesrc + '\"/>';
+    }
+
+    function addImagesForSelection() {
+        //http://icant.co.uk/sandbox/yboss/
+
+        //TODO filter 'q' for useless prepositions like 'the', 'and', etc
+        var selection = window.getSelection();
+
+        var line = '' + selection;
+        if (line.length == 0) {
+            alert("Select some text to add images.");
+            return;
+        }
+
+        YBOSS.config.imageItemHTML = '<a href="#" onclick="enlargeImage(this, \'{url}\');">' +
+                                        '<img src="{thumbnail}" ' +
+                                        'width="{thumbnailwidth}"' +
+                                        'height="{thumbnailheight}">' +
+                                     '</a>"';
+
+        var q = line;
+        var images = document.getElementById("_Images");
+        
+        //images.innerHTML = '<b>Updating images...</b><br/><pre>' + q + '</pre>';
+
+        YBOSS.get(
+         {
+           //searches:'news,images,search',
+           searches:'images',
+           query: q,
+           count:10,
+           callback: function(o) {
+               images.innerHTML += o.imagesHTML;
+           },
+           fail: function() {
+//               //images.innerHTML = 'No images available.';
+           }
+         }
+        );
+
+    }
+    var helpShowing = false;
+
+    function toggleHelp() {
+        if (helpShowing) {
+            hideHelp();
+        }
+        else {
+            showHelp();
+        }
+    }
+
+    function hideHelp() {
+        helpShowing = false;
+        var help = document.getElementById("_Help");
+        help.style.display = 'none';
+        localStorage["hideHelp"] = 1;
+    }
+    
+    function showHelp() {
+        helpShowing = true;
+        var help = document.getElementById("_Help");
+        help.style.display = '';
+        localStorage["hideHelp"] = 0;
+    }
+
+    function onControlMouseOver() {
+        var control = document.getElementById("_Control");
+        control.style.cursor='crosshair';
+
+    }
+    function onControlMouseOut() {
+        var control = document.getElementById("_Control");
+    }
+
+    function setTheme(theme) {       
+        currentTheme = theme;
+
+        var c = document.getElementById("themeCSS");
+        c.href = '%%STATICHOST%%/themes/' + theme + '.css';
+        localStorage['theme'] = theme;
+    }
+    
+    function onFontSpinOver(e) {
+        document.getElementById("_Font").style.backgroundColor = "#ddf";
+    }
+
+    function onFontSpinOut(e) {
+        document.getElementById("_Font").style.backgroundColor = "";
+    }
+    
+    function onFrameSpinOver(e) {
+        document.getElementById("Status").style.backgroundColor = "#dfd";
+    }
+
+    function onFrameSpinOut(e) {
+        document.getElementById("Status").style.backgroundColor = "";
+    }
+
+    //Setup escape-key events
+    document.onkeydown = function(e){
+        var keycode;
+        if (e == null) { // ie
+            keycode = event.keyCode;
+        } else { // mozilla
+            keycode = e.which;
+        }
+        if(keycode == 27){ // escape, close box, esc
+            closeWindow();
+        }
+        else if (keycode == 37) {
+            //left
+            goPrevious();
+        }
+        else if (keycode == 38) {
+            //up
+            fontLarger();
+        }
+        else if (keycode == 39) {
+            //right
+            goNext();
+        }
+        else if (keycode == 40) {
+            //down
+            fontSmaller();
+        }
+    };
+
+    function onContentMouseOver(e) {
+    }
+    function onContentMouseOut(e) {
+        e.className='';
+    }
+
+
+</script>
+
+<body onload="setup();">
+    
+    <div class="menu">
+            
+        <ul>
+            <li><a href="#">Go...</a></li>
+            <li><a href="javascript:toggleSpeech()">Speak</a></li>
+            <li><a href="#">Translate</a>
+            <li><a href="#">Theme</a>
+                <ul>
+                    <li><a href="javascript:setTheme('default-black')">White on Black</a></li>
+                    <li><a href="javascript:setTheme('default-white')">Black on White</a></li>
+                    <li><a href="javascript:setTheme('terminal-green')">Terminal Green</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript:addImagesForSelection();">Images</a></li>
+            <li><a href="">Edit</a></li>
+            <li><a href="">Info</a></li>
+            <li><a href="">Help</a></li>
+        </ul>
+    </div>
+		
+    
+    <div id="_Panel">
+        <div id="_TextZoom">
+        </div>
+        <div id="_Content" onMouseOver="onContentMouseOver(this);" onMouseOut="onContentMouseOut(this);">
+        </div>
+        <div id="_Images">
+        </div>
+    </div>
+
+    <div id="_Bottom" style="width: 48%; float: right">
+        <table width="100%" id="_Control" border="0" onmouseout="onControlMouseOut();" onmouseover="onControlMouseOver();" oncontextmenu="closeWindow(this); return false;">
+            <tr>
+                <td width="10%" align="left" id="_Prev">
+
+                </td>
+                <td width="25%" align="center" id="Status">
+
+                </td>
+                <td width="10%" align="right" id="_Next">
+
+                </td>
+                <td width="10%" align="center">
+                    &nbsp;
+                </td>
+                <td width="10%" align="left">
+                    <button onclick="fontSmaller()">-</button>
+                </td>
+                <td width="25%" align="center" id="_Font">
+                    <span id="_Font">&nbsp; Abc &nbsp;</span>
+                </td>
+                <td width="10%" align="right">
+                    <button onclick="fontLarger()">+</button>
+                </td>
+            </tr>
+        </table>
+
+        <span id="_Speech">
+        </span>
+
+    </div>
+    
+
+</body>

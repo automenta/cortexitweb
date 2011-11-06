@@ -1,0 +1,22 @@
+#_Panel {
+    color: white;
+    background-color: black;
+}
+
+.ContentHighlighted {
+    background-color: #444;
+}
+
+
+body {
+   margin: 1%;
+   background-color: #888;
+}
+
+Status {
+    color: white;
+}
+
+_Font {
+    color: white;
+}

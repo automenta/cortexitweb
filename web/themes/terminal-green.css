@@ -1,0 +1,27 @@
+/* 
+    Document   : terminal-green
+    Created on : Nov 10, 2010, 6:15:36 AM
+    Author     : me
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+@import url("default-black.css");
+
+#_Panel {
+    color: #18B218;
+    background-color: black;
+}
+
+
+Status {
+    color: white;
+}
+
+_Font {
+    color: white;
+}

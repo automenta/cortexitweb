@@ -1,0 +1,181 @@
+/* 
+    Document   : cortexit.css
+    Created on : Nov 3, 2011, 12:06:06 PM
+    Author     : me
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+body {
+    margin: 1%;
+}
+
+.smallLabel {
+    font-size: 16px;
+}
+
+#_Panel {
+    text-align:left;
+    font-family:Arial,Sans;
+    color: white;
+    background-color: black;
+    width:100%;
+    height: 88%;
+    overflow: auto;
+}
+
+
+#_Content, #_TextZoom {
+    margin: 2%;
+}
+
+#_Images {
+    margin: 3%;
+}
+
+#Status {
+    font-size: 30px;
+    font-family: Arial, Sans;
+    -webkit-user-select:none;
+}
+#_Font {
+    font-size: 30px;
+    font-family: Arial, Sans;
+}
+
+#_Prev {
+    font-size: 30px;
+    color: black;
+    font-family: Arial, Sans;
+    -webkit-user-select:none;
+}
+
+#_Next {
+    font-size: 30px;
+    color: black;
+    font-family: Arial, Sans;
+    -webkit-user-select:none;
+}
+
+
+#_Speech {
+    position: absolute; left: 1%; bottom: 1%; width: 150px; height: 40px; overflow: hidden;
+}
+
+
+a, a.visited {
+    color: black;
+    font-size:30px;
+    font-family: Arial, Sans;
+}
+
+#_Bottom {
+    overflow: auto;
+    color: white;
+    background-color: #333;
+}
+
+#_Control {
+    font-family: Arial, Sans;
+    background-color: #333;
+}
+
+a {
+    color: white;
+}
+
+
+
+.menu{
+    border:none;
+    border:0px;
+    margin:0px;
+    padding:0px;
+    font: 67.5% "Lucida Sans Unicode", "Bitstream Vera Sans", "Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica, sans-serif;
+    font-size:14px;
+    font-weight:bold;
+}
+.menu ul{
+    background: transparent;
+    height:35px;
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+.menu li{
+    float:left;
+    padding:0px;
+}
+.menu li a{
+    background:#333333 url("images/seperator.gif") bottom right no-repeat;
+    color:#cccccc;
+    display:block;
+    font-weight:normal;
+    line-height:35px;
+    margin:0px;
+    padding:0px 25px;
+    text-align:center;
+    text-decoration:none;
+}
+.menu li a:hover, .menu ul li:hover a{
+    background: #2580a2 url("images/hover.gif") bottom center no-repeat;
+    color:#FFFFFF;
+    text-decoration:none;
+}
+.menu li ul{
+    background:#333333;
+    display:none;
+    height:auto;
+    padding:0px;
+    margin:0px;
+    border:0px;
+    position:absolute;
+    width:225px;
+    z-index:200;
+    /*top:1em;
+    /*left:0;*/
+}
+.menu li:hover ul{
+    display:block;
+
+}
+.menu li li {
+    background:url('images/sub_sep.gif') bottom left no-repeat;
+    display:block;
+    float:none;
+    margin:0px;
+    padding:0px;
+    width:225px;
+}
+.menu li:hover li a{
+    background:none;
+
+}
+.menu li ul a{
+    display:block;
+    height:35px;
+    font-size:12px;
+    font-style:normal;
+    margin:0px;
+    padding:0px 10px 0px 15px;
+    text-align:left;
+}
+.menu li ul a:hover, .menu li ul li:hover a{
+    background:#2580a2 url('images/hover_sub.gif') center left no-repeat;
+    border:0px;
+    color:#ffffff;
+    text-decoration:none;
+}
+.menu p{
+    clear:left;
+}	
+
