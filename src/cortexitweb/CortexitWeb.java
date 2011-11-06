@@ -32,14 +32,13 @@ import org.restlet.resource.ServerResource;
  */
 public class CortexitWeb extends ServerResource {  
 
-   final String cortexitHost;;
-   final String staticHost;;
+   static String cortexitHost;;
+   static String staticHost;;
     
    int maxSentenceLength = 128;
 
-    public CortexitWeb() throws Exception {
-        super();
-        
+   
+   public static void main(String[] args) throws Exception {  
         Properties p = new Properties();
         p.load(new FileInputStream("cortexit.ini"));
         cortexitHost = p.getProperty("host");
@@ -64,11 +63,6 @@ public class CortexitWeb extends ServerResource {
         // Attach the application to the component and start it  
         component.getDefaultHost().attach(application);  
         component.start();  
-    }
-
-   
-   public static void main(String[] args) throws Exception {  
-       new CortexitWeb();
    }
 
    public void readFileInto(String path, StringBuffer b) throws Exception {
