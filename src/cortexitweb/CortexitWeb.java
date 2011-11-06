@@ -5,10 +5,12 @@
 package cortexitweb;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jsoup.Jsoup;
@@ -30,12 +32,19 @@ import org.restlet.resource.ServerResource;
  */
 public class CortexitWeb extends ServerResource {  
 
-   final String cortexitHost = "http://24.131.65.222:8182";
-   final String staticHost = "http://24.131.65.222:8183";
+   final String cortexitHost;;
+   final String staticHost;;
     
    int maxSentenceLength = 128;
 
-   public static void main(String[] args) throws Exception {  
+    public CortexitWeb() throws Exception {
+        super();
+        
+        Properties p = new Properties();
+        p.load(new FileInputStream("cortexit.ini"));
+        cortexitHost = p.getProperty("host");
+        staticHost = p.getProperty("static");
+        
         Server server = new Server(Protocol.HTTP, 8182, CortexitWeb.class);
         server.start();  
       
@@ -55,6 +64,11 @@ public class CortexitWeb extends ServerResource {
         // Attach the application to the component and start it  
         component.getDefaultHost().attach(application);  
         component.start();  
+    }
+
+   
+   public static void main(String[] args) throws Exception {  
+       new CortexitWeb();
    }
 
    public void readFileInto(String path, StringBuffer b) throws Exception {
