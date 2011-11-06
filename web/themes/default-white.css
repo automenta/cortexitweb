@@ -3,6 +3,10 @@
     background-color: white;
 }
 
+a {
+    color: #333;
+}
+
 .ContentHighlighted {
     background-color: #ddd;
 }
