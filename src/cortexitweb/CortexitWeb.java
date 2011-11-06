@@ -34,6 +34,7 @@ public class CortexitWeb extends ServerResource {
 
    static String cortexitHost;;
    static String staticHost;;
+   static String staticPath;
     
    int maxSentenceLength = 128;
 
@@ -43,6 +44,7 @@ public class CortexitWeb extends ServerResource {
         p.load(new FileInputStream("cortexit.ini"));
         cortexitHost = p.getProperty("host");
         staticHost = p.getProperty("static");
+        staticPath = p.getProperty("staticPath");
         
         Server server = new Server(Protocol.HTTP, 8182, CortexitWeb.class);
         server.start();  
@@ -56,7 +58,7 @@ public class CortexitWeb extends ServerResource {
         Application application = new Application() {  
             @Override  
             public Restlet createInboundRoot() {  
-                    return new Directory(getContext(), "file:///work/cortexitweb/web");  
+                    return new Directory(getContext(), staticPath);  
             }  
         };  
           
