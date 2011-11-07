@@ -70,7 +70,7 @@ body {
 
 
 #_Speech {
-    position: absolute; left: 1%; bottom: -40px; width: 150px; height: 40px; overflow: hidden;
+    position: absolute; left: 1%; bottom: -40px; width: 150px; height: 0px; overflow: hidden;
 }
 
 
