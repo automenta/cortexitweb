@@ -1,7 +1,7 @@
-<link rel="stylesheet" type="text/css" href="%%STATICHOST%%/cortexit.css" />
+<link rel="stylesheet" type="text/css" href="/static/cortexit.css" />
 
-<script type='text/javascript' src='%%STATICHOST%%/animator.js'></script>
-<script type='text/javascript' src='%%STATICHOST%%/yboss-lib.js'></script>
+<script type='text/javascript' src='/static/animator.js'></script>
+<script type='text/javascript' src='/static/yboss-lib.js'></script>
 
 <link id="themeCSS" rel="stylesheet" type="text/css"  />
 <script>
@@ -66,7 +66,7 @@
             prev.innerHTML = '&nbsp;';
         }
         else {
-            prev.innerHTML = '<a href="javascript:goPrevious()"><img src="%%STATICHOST%%/icons/left.svg" height="32px" width="32px"/></a>';
+            prev.innerHTML = '<a href="javascript:goPrevious()"><img src="/static/icons/left.svg" height="32px" width="32px"/></a>';
         }
 
         var next = document.getElementById("_Next");
@@ -75,7 +75,7 @@
         }
         else {
             //next.innerHTML = '<button onClick="goNext();">----&gt;</button>';
-            next.innerHTML = '<a href="javascript:goNext()"><img src="%%STATICHOST%%/icons/right.svg" height="32px" width="32px"/></a>';
+            next.innerHTML = '<a href="javascript:goNext()"><img src="/static/icons/right.svg" height="32px" width="32px"/></a>';
         }
         updateFonts();
         
@@ -369,7 +369,7 @@
         currentTheme = theme;
 
         var c = document.getElementById("themeCSS");
-        c.href = '%%STATICHOST%%/themes/' + theme + '.css';
+        c.href = '/static/themes/' + theme + '.css';
         localStorage['theme'] = theme;
     }
     
@@ -432,19 +432,19 @@
     <div id="_Top" class="menu">
             
         <ul>
-            <li><a href="#" class="tooltip"><img width="48px" height="48px" src="%%STATICHOST%%/icons/link.svg" alt="Go..."/><span>Go...</span></a></li>
-            <li><a href="javascript:toggleSpeech()" class="tooltip"><img width="48px" height="48px" src="%%STATICHOST%%/icons/speak.svg" alt="Speak"/><span>Speak</span></a></li>
-            <li><a href="#" class="tooltip"><img width="48px" height="48px" src="%%STATICHOST%%/icons/earth.svg" alt="Translate"/><span>Translate</span></a>
-            <li><a href="#" class="tooltip"><img width="48px" height="48px" src="%%STATICHOST%%/icons/colors.svg" title="Theme"/><span>Theme</span></a>
+            <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/link.svg" alt="Go..."/><span>Go...</span></a></li>
+            <li><a href="javascript:toggleSpeech()" class="tooltip"><img width="48px" height="48px" src="/static/icons/speak.svg" alt="Speak"/><span>Speak</span></a></li>
+            <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/earth.svg" alt="Translate"/><span>Translate</span></a>
+            <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/colors.svg" title="Theme"/><span>Theme</span></a>
                 <ul>
                     <li><a href="javascript:setTheme('default-black')">White on Black</a></li>
                     <li><a href="javascript:setTheme('default-white')">Black on White</a></li>
                     <li><a href="javascript:setTheme('terminal-green')">Terminal Green</a></li>
                 </ul>
             </li>
-            <li><a href="javascript:addImagesForSelection();" class="tooltip"><img width="48px" height="48px" src="%%STATICHOST%%/icons/picture.svg" alt="Images"/><span>Images</span></a></li>
-            <li><a href="" class="tooltip"><img width="48px" height="48px" src="%%STATICHOST%%/icons/edit.svg" alt="Edit and Share"/><span>Edit and Share</span></a></li>
-            <li><a href="" class="tooltip"><img width="48px" height="48px" src="%%STATICHOST%%/icons/question.svg" alt="Help"/><span>Help</span></a></li>
+            <li><a href="javascript:addImagesForSelection();" class="tooltip"><img width="48px" height="48px" src="/static/icons/picture.svg" alt="Images"/><span>Images</span></a></li>
+            <li><a href="" class="tooltip"><img width="48px" height="48px" src="/static/icons/edit.svg" alt="Edit and Share"/><span>Edit and Share</span></a></li>
+            <li><a href="" class="tooltip"><img width="48px" height="48px" src="/static/icons/question.svg" alt="Help"/><span>Help</span></a></li>
         </ul>
     </div>
 		
@@ -459,7 +459,7 @@
     </div>
 
     <div id="_Bottom" style="">
-        <table width="100%" id="_Control" border="0" onmouseout="onControlMouseOut();" onmouseover="onControlMouseOver();" oncontextmenu="closeWindow(this); return false;">
+        <table width="100%" id="_Control" border="0" onmouseout="onControlMouseOut();" onmouseover="onControlMouseOver();" >
             <tr>
                 <td width="10%" align="left" id="_Prev">
 
@@ -474,13 +474,13 @@
                     &nbsp;
                 </td>
                 <td width="10%" align="left">
-                    <a href="javascript:fontSmaller()"><img src="%%STATICHOST%%/icons/minus.svg" height="32px" width="32px" title="Smaller Font"/></a>
+                    <a href="javascript:fontSmaller()"><img src="/static/icons/minus.svg" height="32px" width="32px" title="Smaller Font"/></a>
                 </td>
                 <td width="25%" align="center" id="_Font" >                    
                     <a class="tooltipAbove">&nbsp; Abc &nbsp;<span>Mousewheel to adjust font size</span></a>
                 </td>
                 <td width="10%" align="right">
-                    <a href="javascript:fontLarger()"><img src="%%STATICHOST%%/icons/plus.svg" height="32px" width="32px" title="Larger Font"/></a>
+                    <a href="javascript:fontLarger()"><img src="/static/icons/plus.svg" height="32px" width="32px" title="Larger Font"/></a>
                 </td>
             </tr>
         </table>
