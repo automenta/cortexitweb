@@ -1,17 +1,16 @@
 <link rel="stylesheet" type="text/css" href="/static/cortexit.css" />
 
 <script type='text/javascript' src='/static/animator.js'></script>
-<script type='text/javascript' src='/static/yboss-lib.js'></script>
 
+<!--
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" type="text/css" media="all" />
 <link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
+-->                    
                         
 <link id="themeCSS" rel="stylesheet" type="text/css"  />
 <script>
-    YBOSS.appId = 'u9Mq95bV34HGuu4H5vdU1gBax96supTNuvCvqrSisdoGHy4TW21foDbILY0CFzs-';
-    //For application entrypoint -> http://github.com/automenta/corexit
 
     var defaultTheme = 'default-black';
     var minFrameLength = 8;
@@ -27,10 +26,17 @@
         speechEnabled = true;
 
         var speech = document.getElementById("_Speech");
-        var speechLine = line.replace("&nbsp;", " ");
-        var speechLineEncoded = encodeURIComponent(speechLine);
-        var speechURL = 'http://translate.google.com/translate_tts?q=' + speechLineEncoded;
-        speech.innerHTML = '<iframe src="' + speechURL + '" width="200px" height="80px"></iframe>';
+        speech.style.display = 'inline';
+        var speechLine = line.replace("&nbsp;", " ").replace(/<\/?[a-z][a-z0-9]*[^<>]*>/ig, "");
+
+        //SEE: http://www.vikitech.com/980/top-10-web-based-services-for-text-to-speech-conversion
+
+        var speechLineEncoded = escape(speechLine);
+        //var speechURL = 'http://translate.google.com/translate_tts?q=' + speechLineEncoded;
+        
+        var speechURL = 'http://vozme.com/text2voice.php?bookmarklet=1&gn=fm&interface=full&default_language=en&text=' + speechLineEncoded;
+        
+        speech.innerHTML = '<iframe src="' + speechURL + '" width="350px" height="120px"></iframe>';
     }
     
     function disableSpeech() {
@@ -51,12 +57,8 @@
     function showFrame(f) {
         
         disableSpeech();
-        clearImages();
 
         var content = document.getElementById("_Content");
-        if (cframes.length < 2) {
-            content = document.getElementById("_TextZoom");
-        }
         content.style.opacity = 0;
         
 
@@ -64,7 +66,7 @@
         content.innerHTML = line;
 
         var status = document.getElementById("Status");
-        status.innerHTML = '<a class="tooltipAbove">' + (f+1) + '/' + cframes.length + '<span>Mousewheel to go previous and next</span></a>';
+        status.innerHTML = '<a class="tooltipAbove">' + (f+1) + '/' + cframes.length + '<span>Mousewheel or left/right key to go previous and next</span></a>';
 
         var prev = document.getElementById("_Prev");
         if (f == 0) {
@@ -266,8 +268,8 @@
         else {
             frameSpin.onmousewheel = onFrameSpin;
         }
-        frameSpin.addEventListener('mouseover', onFrameSpinOver, false); // Chrome
-        frameSpin.addEventListener('mouseout', onFrameSpinOut, false); // Chrome
+//        frameSpin.addEventListener('mouseover', onFrameSpinOver, false); // Chrome
+//        frameSpin.addEventListener('mouseout', onFrameSpinOut, false); // Chrome
 
         if (font.addEventListener) {
             font.addEventListener('DOMMouseScroll', onFontSpin, false);
@@ -276,8 +278,8 @@
         else {
             font.onmousewheel= onFontSpin;
         }
-        font.addEventListener('mouseover', onFontSpinOver, false); // Chrome
-        font.addEventListener('mouseout', onFontSpinOut, false); // Chrome
+//        font.addEventListener('mouseover', onFontSpinOver, false); // Chrome
+//        font.addEventListener('mouseout', onFontSpinOut, false); // Chrome
 
         content.style.fontSize = fontSize + "px";
         textzoom.style.fontSize = content.style.fontSize;
@@ -307,63 +309,39 @@
 
     }
 
-    function clearImages() {
-        var images = document.getElementById("_Images");
-        images.innerHTML = '';
-    }
-
     function enlargeImage(element, imagesrc) {
         element.innerHTML = '<img src=\"' + imagesrc + '\"/>';
     }
+    
+    var qI = 0;
 
     function addImagesForSelection() {
-        //http://icant.co.uk/sandbox/yboss/
-
         //TODO filter 'q' for useless prepositions like 'the', 'and', etc
-        var selection = window.getSelection();
-
-        var line = '' + selection;
-        if (line.length == 0) {
-            alert("Select some text to add images.");
+        var selection = selectedText;
+        if (selection == '') {
+            alert('Select some text with which to find images.');
             return;
         }
 
-        YBOSS.config.imageItemHTML = '<a href="#" onclick="enlargeImage(this, \'{url}\');">' +
-                                        '<img src="{thumbnail}" ' +
-                                        'width="{thumbnailwidth}"' +
-                                        'height="{thumbnailheight}">' +
-                                     '</a>"';
+        //images.search.yahoo.com/search/images?p=test
 
-        var q = line;
-        var images = document.getElementById("_Images");
+        var iurl = 'http://images.search.yahoo.com/search/images?p=' + escape(selection);
         
-        //images.innerHTML = '<b>Updating images...</b><br/><pre>' + q + '</pre>';
+//        var images = document.getElementById("_Images");
+//        images.innerHTML += '<div class="imageSectionTitle" style="clear: both;">Image results for: ' + selection + '</div><br/>';
+//        images.innerHTML += '<div class="imageSection"><iframe src=\"' + iurl + '\" width="100%" height="400px"></iframe></div>';
 
-        YBOSS.get(
-         {
-           //searches:'news,images,search',
-           searches:'images',
-           query: q,
-           count:10,
-           callback: function(o) {
-               images.innerHTML += o.imagesHTML;
-           },
-           fail: function() {
-//               //images.innerHTML = 'No images available.';
-           }
-         }
-        );
-
-    }
+        //cframes[currentFrame] += '<div id="x' + qI + '" class="ui-widget-content">';
+        cframes[currentFrame] += '<br/><br/><div style="clear: both;">Image results for: ' + selection + '</div><br/>';
+        cframes[currentFrame] += '<div class="imageSection"><iframe src=\"' + iurl + '\" width="100%" height="400px"></iframe></div>';
+        //cframes[currentFrame] += '<script>var newFrame = $(\'#x\' +' + qI + '); newFrame.resizable(); newFrame.draggable();';
+        //cframes[currentFrame] += '</div>';
 
 
-    function onControlMouseOver() {
-        var control = document.getElementById("_Control");
-        control.style.cursor='crosshair';
+        showFrame(currentFrame);
+        
+        qI++;
 
-    }
-    function onControlMouseOut() {
-        var control = document.getElementById("_Control");
     }
 
     function setTheme(theme) {       
@@ -374,21 +352,6 @@
         localStorage['theme'] = theme;
     }
     
-    function onFontSpinOver(e) {
-        document.getElementById("_Font").className += "_FontHover";
-    }
-
-    function onFontSpinOut(e) {
-        document.getElementById("_Font").className -= "_FontHover";
-    }
-    
-    function onFrameSpinOver(e) {
-        document.getElementById("Status").style.backgroundColor = "#dfd";
-    }
-
-    function onFrameSpinOut(e) {
-        document.getElementById("Status").style.backgroundColor = "";
-    }
 
     //Setup escape-key events
     document.onkeydown = function(e){
@@ -425,18 +388,50 @@
         e.className='';
     }
     
-    function showHelp() {
-        $( "#dialog-message" ).dialog({
-                width: '75%',
-                modal: true,
-                buttons: {
-                        Ok: function() {
-                                $( this ).dialog( "close" );
-                        }
-                }
-        });        
+    function visitOriginal() {
+        
     }
+//    function showHelp() {
+//        $( "#dialog-message" ).dialog({
+//                width: '75%',
+//                modal: true,
+//                buttons: {
+//                        Ok: function() {
+//                                $( this ).dialog( "close" );
+//                        }
+//                }
+//        });        
+//    }
+//    <div id="dialog-message" title="About Cortexit" style="display:none">
+//        <center><iframe src="/static/about.html" width="100%" height="400px"></iframe></center>
+//    </div>
 
+
+
+
+</script>
+
+<SCRIPT LANGUAGE="JavaScript">
+<!-- Original:  Ronnie T. Moore -->
+<!-- Web Site:  The JavaScript Source -->
+
+<!-- This script and many more are available free online at -->
+<!-- The JavaScript Source!! http://javascript.internet.com -->
+
+<!-- Begin
+var selectedText = "";
+function getActiveText(e) { 
+
+    // Sets text MSIE or Netscape active 
+    // text based on browser, puts text in form
+    selectedText = (document.all) ? document.selection.createRange().text : document.getSelection();
+
+    return true;
+}
+
+document.onmouseup = getActiveText;
+if (!document.all) document.captureEvents(Event.MOUSEUP);
+//  End -->
 
 </script>
 
@@ -445,21 +440,30 @@
     <div id="_Top" class="menu">
             
         <ul>
-            <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/link.svg" alt="Go..."/><span>Go...</span></a></li>
-            <li><a href="javascript:toggleSpeech()" class="tooltip"><img width="48px" height="48px" src="/static/icons/speak.svg" alt="Speak"/><span>Speak</span></a></li>
-            <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/earth.svg" alt="Translate"/><span>Translate</span></a>
+            <li><a href="javascript:alert('Go to URL: Feature not complete');" class="tooltip"><img width="48px" height="48px" src="/static/icons/link.svg" alt="Go..."/><span>Go...</span></a></li>
+            <li><a href="javascript:toggleSpeech()" class="tooltip"><img width="48px" height="48px" src="/static/icons/speak.svg" alt="Speak"/><span>Toggle Speech</span></a></li>
+            <li><a href="javascript:addImagesForSelection();" class="tooltip"><img width="48px" height="48px" src="/static/icons/picture.svg" alt="Images"/><span>Images</span></a></li>
             <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/colors.svg" title="Theme"/><span>Theme</span></a>
                 <ul>
                     <li><a href="javascript:setTheme('default-black')">White on Black</a></li>
                     <li><a href="javascript:setTheme('default-white')">Black on White</a></li>
                     <li><a href="javascript:setTheme('terminal-green')">Terminal Green</a></li>
+                    <li><a href="javascript:setTheme('earthspace')">Earth Space</a></li>
+                    <li><a href="javascript:setTheme('concrete')">Concrete</a></li>
                 </ul>
             </li>
-            <li><a href="javascript:addImagesForSelection();" class="tooltip"><img width="48px" height="48px" src="/static/icons/picture.svg" alt="Images"/><span>Images</span></a></li>
-            <li><a href="" class="tooltip"><img width="48px" height="48px" src="/static/icons/edit.svg" alt="Edit and Share"/><span>Edit and Share</span></a></li>
-            <li><a href="javascript:showHelp()" class="tooltip"><img width="48px" height="48px" src="/static/icons/question.svg" alt="Help"/><span>Help</span></a></li>
-            <li><a href="http://cortexit.org/cortexit.org/static/about.html" class="tooltip"><img width="48px" height="48px" src="/static/icons/question.svg" alt="Help"/><span>Help</span></a></li>
+            <li><a href="javascript:alert('Translate: Feature not complete');" class="tooltip"><img width="48px" height="48px" src="/static/icons/earth.svg" alt="Translate"/><span>Translate</span></a>
+            <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/question.svg" alt="Help"/><span>Help</span></a>
+                <ul>
+                    <li><a href="http://cortexit.org/cortexit.org/static/about.html">What is Cortexit?</a></li>
+                    <li><a href="http://cortexit.org/cortexit.org/static/privacy.html">Privacy Policy</a></li>
+                    <li><a href="http://evariware.com/contact">Contact Us</a></li>
+                </ul>
+            </li>
         </ul>
+    </div>
+    <div id="Return">
+        <a href="javascript:visitOriginal();">X</a>
     </div>
 		
     
@@ -467,13 +471,12 @@
         <div id="_TextZoom">
         </div>
         <div id="_Content" onMouseOver="onContentMouseOver(this);" onMouseOut="onContentMouseOut(this);">
-        </div>
-        <div id="_Images">
+            <div id="Loading"><center>Loading...</center></div>
         </div>
     </div>
 
     <div id="_Bottom" style="">
-        <table width="100%" id="_Control" border="0" onmouseout="onControlMouseOut();" onmouseover="onControlMouseOver();" >
+        <table width="100%" id="_Control" border="0">
             <tr>
                 <td width="10%" align="left" id="_Prev">
 
@@ -491,7 +494,7 @@
                     <a href="javascript:fontSmaller()"><img src="/static/icons/minus.svg" height="32px" width="32px" title="Smaller Font"/></a>
                 </td>
                 <td width="25%" align="center" id="_Font" >                    
-                    <a class="tooltipAbove">&nbsp; Abc &nbsp;<span>Mousewheel to adjust font size</span></a>
+                    <a class="tooltipAbove">&nbsp; Abc &nbsp;<span>Mousewheel or up/down key to adjust font size</span></a>
                 </td>
                 <td width="10%" align="right">
                     <a href="javascript:fontLarger()"><img src="/static/icons/plus.svg" height="32px" width="32px" title="Larger Font"/></a>
@@ -504,8 +507,4 @@
     <span id="_Speech">
     </span>
     
-    <div id="dialog-message" title="About Cortexit" style="display:none">
-        <center><iframe src="/static/about.html" width="100%" height="400px"></iframe></center>
-    </div>
-
 </body>

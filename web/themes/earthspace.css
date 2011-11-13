@@ -1,0 +1,44 @@
+/* 
+    Document   : terminal-green
+    Created on : Nov 10, 2010, 6:15:36 AM
+    Author     : me
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+@import url("default-black.css");
+
+#_Panel {
+    color: #E2A848;
+    font-family: monospace;
+    background-color: black;
+    border: 5px solid green;
+}
+
+#_Panel a {
+    color: #D282F2;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+body {
+   background: url('/static/themes/image/earth.jpg') no-repeat;
+   background-size: 100%;
+   background-color: transparent;
+}
+
+Status {
+    color: white;
+}
+
+
+#Status a {
+    font-family: monospace;
+}
+#_Font a {
+    font-family: monospace;
+}

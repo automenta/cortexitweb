@@ -1,20 +1,17 @@
 Cortexit TODO
 
-
--Loading... animator
-
--Upcoming feature popup-window stub page
-
--About
-	Philosophy
-	Name
-        Privacy Policy
-
 -Demo Video
 
 -Speak
+    --Make speech draggable/resizable?
 
 -Images
+    --Make image windows http://jqueryui.com/demos/draggable/ + resizable ?
+    --Scroll to new Image Searches
+    --Open Images in New Window
+
+-Return Button ('X' in top-right)
+    --Specified by server: setReturnPage(url)
 
 -Go
 

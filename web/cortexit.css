@@ -36,6 +36,12 @@ body {
     overflow: auto;
 }
 
+#Loading {
+   background: url('/static/icons/loading.gif') no-repeat;
+   background-size: 100%;
+   width: 100%;
+   height: 90%;
+}
 
 #_Content, #_TextZoom {
     margin: 1%;
@@ -48,29 +54,21 @@ body {
 #Status {
     font-size: 30px;
     font-family: Arial, Sans;
-    -webkit-user-select:none;
+    cursor: crosshair;
 }
 #_Font {
     font-size: 30px;
     font-family: Arial, Sans;
-    -webkit-user-select:none;
+    cursor: crosshair;
 }
 
-#_Prev {
-    color: black;
-    font-family: Arial, Sans;
-    -webkit-user-select:none;
-}
 
-#_Next {
-    color: black;
-    font-family: Arial, Sans;
-    -webkit-user-select:none;
-}
 
 
 #_Speech {
-    position: absolute; left: 1%; bottom: -40px; width: 150px; height: 0px; overflow: hidden;
+    position: absolute; left: 1%; bottom: 0px; overflow: hidden;
+    background-color: #888;
+    display:none;
 }
 
 
@@ -79,14 +77,17 @@ a, a.visited {
     font-family: Arial, Sans;
 }
 
-#_Bottom {
-    overflow: auto;
-    color: white;
-    position: absolute;
-    bottom: 0;
-    right: 1%;
-    width: 48%; 
-    
+#Return {
+    position:absolute;
+    top:0;
+    right:1%;    
+}
+
+#Return a {
+    color: gray;
+    font-size: 32px;
+    font-weight: bolder;
+    text-decoration: none;
 }
 
 #_Top {
@@ -95,12 +96,23 @@ a, a.visited {
     left:1%;
 }
 
+#_Bottom {
+    overflow: auto;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    right: 1%;
+    width: 48%;     
+}
+
+
+
 .menu{
     border:none;
     border:0px;
     margin:0px;
     padding:0px;
-    font-size:14px;
+    font-size:18px;
     font-weight:bold;
 }
 
@@ -127,7 +139,6 @@ a {
     padding:0px;
 }
 .menu li a{
-    background:#333333 url("images/seperator.gif") bottom right no-repeat;
     color:#cccccc;
     display:block;
     font-weight:normal;
@@ -174,7 +185,7 @@ a {
 .menu li ul a{
     display:block;
     height:35px;
-    font-size:12px;
+    font-size:18px;
     font-style:normal;
     margin:0px;
     padding:0px 10px 0px 15px;
@@ -194,5 +205,12 @@ a:hover {text-decoration:none;} /*BG color is a must for IE6*/
 a.tooltip span {display:none; padding:2px 3px; margin-left:-20px; margin-top: 40px; width:130px; z-index: 400;}
 a.tooltip:hover span{display:inline; position:absolute; background:#ffffff; border:1px solid #cccccc; color:#6c6c6c;}
 
-a.tooltipAbove span {display:none; padding:2px 3px; margin-left:-20px; margin-top: -40px; width:130px; font-size: 15px; }
-a.tooltipAbove:hover span{display:inline; position:absolute; background:#ffffff; border:1px solid #cccccc; color:#6c6c6c;}
+a.tooltipAbove span {display:none; margin-left:-200px;  margin-bottom: 60px; width:300px; font-size: 14px; }
+a.tooltipAbove:hover span{display:inline; position:absolute;  color:white;}
+
+
+.imageSection {
+    width: 75%;
+    float: right;
+    margin-bottom: 15px;
+}
