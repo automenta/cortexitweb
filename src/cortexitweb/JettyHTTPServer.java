@@ -166,16 +166,29 @@ public class JettyHTTPServer {
                 Document doc = Jsoup.parse(target, requestTimeoutMS);
                 String title = doc.getElementsByTag("title").first().text();
 
-                Elements links = doc.select("a[href]"); // a with href
+                Elements links = doc.select("a[href]");
                 for (Element e : links) {
-                    e.prepend("{a href=\"" + cortexifyURL(target.getHost(), escape(e.attr("href"))) + "\" target=\"_blank\"}");
-                    e.append("{/a}");
+                    e.prepend("{{a href=\"" + cortexifyURL(target.getHost(), escape(e.attr("href"))) + "\" target=\"_blank\"}}");
+                    e.append("{{/a}}");
                 }
-                Elements imgs = doc.select("img[src]"); // a with href
+                Elements imgs = doc.select("img[src]"); 
                 for (Element e : imgs) {
-                    e.prepend("{img src=\"" + e.attr("src") + "\"}");
-                    //e.append("}. ");
+                    e.prepend("{{img src=\"" + e.attr("src") + "\"/}}");
                 }
+                final String liBreak = "{{li}}";
+                for (Element e : doc.select("li")) {
+                    e.append(liBreak);
+                }
+                for (Element e : doc.select("tr")) {
+                    e.append(liBreak);
+                }
+                for (Element e : doc.select("hr")) {
+                    e.append(liBreak);
+                }
+                for (Element e : doc.select("br")) {
+                    e.append(liBreak);
+                }
+                
 
                 StringBuffer commands = new StringBuffer();
 
@@ -183,8 +196,9 @@ public class JettyHTTPServer {
                 t = t.replace(". ", ".\n");
                 t = t.replace("? ", "?\n");
                 t = t.replace("! ", "!\n");
-                t = t.replace("{", "<");
-                t = t.replace("}", ">");
+                t = t.replace(liBreak, "\n");
+                t = t.replace("{{", "<");
+                t = t.replace("}}", ">");
                 String[] sentences = t.split("\n");
                 for (String s : sentences) {
                     s = s.trim();
@@ -197,6 +211,7 @@ public class JettyHTTPServer {
                     //TODO proper string escaping.. this is a HACK!
                     commands.append("addFrame(\"" + frameEscape(s) + "\");\n");
                 }
+                commands.append("setOriginal(\"" + target + "\");\n");
 
                 writeCortexitPage(out, title, commands.toString());
             }

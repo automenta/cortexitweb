@@ -1,5 +1,7 @@
 Cortexit TODO
 
+-Break on: </li>, </tr>, </hr>
+
 -Demo Video
 
 -Speak
@@ -12,6 +14,10 @@ Cortexit TODO
 
 -Return Button ('X' in top-right)
     --Specified by server: setReturnPage(url)
+
+-PNGs instead of SVGs
+
+-Edit and Share
 
 -Go
     --Improve appearance, instead of standard javascript dialog

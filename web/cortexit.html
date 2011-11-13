@@ -154,7 +154,6 @@
 
     function addFrame(content) {
         cframes.push(content);
-
     }
 
     function onFrameSpin(e) {
@@ -219,40 +218,6 @@
         e.returnValue = false;  // cancel default action
     }
 
-//    var skipNextSizeStore = true;
-
-//    function restoreWindowPosition() {
-//        chrome.windows.getCurrent(function(w) {
-//            var l = localStorage["windowDimensions"];
-//            alert('restore: ' + l);
-//            if (l != undefined) {
-//                w.moveTo(l[0], l[1]);
-////                w.left = l[0];
-////                w.top = l[1];
-//                w.width = l[2];
-//                w.height = l[3];
-//            }
-//            skipNextSizeStore = true;
-//        });
-//    }
-    
-//    function storeWindowPosition() {
-//        chrome.windows.getCurrent(function(w) {
-//            localStorage["windowDimensions"] = [ w.left, w.top, w.width, w.height ];
-//            alert('store: ' + localStorage["windowDimensions"]);
-//        });
-//    }
-//
-    function closeWindow(event) {
-            //Try both methods of hiding it
-//            storeWindowPosition();
-            window.close();
-            
-            var overlay = document.getElementById('_Overlay');
-            if (overlay!=undefined)
-                style.display='none';
-    }
-
     function setup() {
         var panel = document.getElementById("_Panel");
         var control = document.getElementById("_Control");
@@ -268,8 +233,6 @@
         else {
             frameSpin.onmousewheel = onFrameSpin;
         }
-//        frameSpin.addEventListener('mouseover', onFrameSpinOver, false); // Chrome
-//        frameSpin.addEventListener('mouseout', onFrameSpinOut, false); // Chrome
 
         if (font.addEventListener) {
             font.addEventListener('DOMMouseScroll', onFontSpin, false);
@@ -278,34 +241,10 @@
         else {
             font.onmousewheel= onFontSpin;
         }
-//        font.addEventListener('mouseover', onFontSpinOver, false); // Chrome
-//        font.addEventListener('mouseout', onFontSpinOut, false); // Chrome
 
         content.style.fontSize = fontSize + "px";
         textzoom.style.fontSize = content.style.fontSize;
 
-        //control.ondblclick = closeWindow;
-
-        //setup theme
-        var currentTheme = localStorage['theme'];
-        if (currentTheme == null) {
-            currentTheme = 'default-black';
-        }
-        setTheme(currentTheme);
-
-
-//        window.onresize = function() {
-//            if (!skipNextSizeStore) {
-//                storeWindowPosition();
-//            }
-//            else {
-//                skipNextSizeStore = false;
-//            }
-//        };
-
-        //storeWindowPosition();
-
-        //chrome.extension.sendRequest({'command' : 'getText'}, corexit);
 
     }
 
@@ -361,10 +300,7 @@
         } else { // mozilla
             keycode = e.which;
         }
-        if(keycode == 27){ // escape, close box, esc
-            closeWindow();
-        }
-        else if (keycode == 37) {
+        if (keycode == 37) {
             //left
             goPrevious();
         }
@@ -387,9 +323,14 @@
     function onContentMouseOut(e) {
         e.className='';
     }
+
+    var original;
+    function setOriginal(o) {
+        original = o;
+    }
     
     function visitOriginal() {
-        
+        document.location = original;
     }
     
     function gotoURL() {
@@ -413,33 +354,45 @@
 //    </div>
 
 
+//setup theme
+var currentTheme = localStorage['theme'];
+if (currentTheme == null) {
+    currentTheme = 'default-black';
+}
+setTheme(currentTheme);
 
 
 </script>
 
 <SCRIPT LANGUAGE="JavaScript">
-<!-- Original:  Ronnie T. Moore -->
-<!-- Web Site:  The JavaScript Source -->
+<!-- Original:  Ronnie T. Moore Web Site:  The JavaScript Source -->
+<!-- This script and many more are available free online at The JavaScript Source!! http://javascript.internet.com -->
 
-<!-- This script and many more are available free online at -->
-<!-- The JavaScript Source!! http://javascript.internet.com -->
-
-<!-- Begin
 var selectedText = "";
 function getActiveText(e) { 
-
-    // Sets text MSIE or Netscape active 
-    // text based on browser, puts text in form
+    // Sets text MSIE or Netscape active text based on browser, puts text in form
     selectedText = (document.all) ? document.selection.createRange().text : document.getSelection();
-
     return true;
 }
 
 document.onmouseup = getActiveText;
 if (!document.all) document.captureEvents(Event.MOUSEUP);
-//  End -->
 
 </script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7989899-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
 
 <body onload="setup();">
     
@@ -459,6 +412,7 @@ if (!document.all) document.captureEvents(Event.MOUSEUP);
                 </ul>
             </li>
             <li><a href="javascript:alert('Translate: Feature not complete');" class="tooltip"><img width="48px" height="48px" src="/static/icons/earth.svg" alt="Translate"/><span>Translate</span></a>
+            <li><a href="javascript:alert('Edit and Share: Feature not complete');" class="tooltip"><img width="48px" height="48px" src="/static/icons/edit.svg" alt="Edit and Share"/><span>Edit and Share</span></a>
             <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/question.svg" alt="Help"/><span>Help</span></a>
                 <ul>
                     <li><a href="http://cortexit.org/cortexit.org/static/about.html">What is Cortexit?</a></li>
