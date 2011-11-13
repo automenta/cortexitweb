@@ -391,6 +391,12 @@
     function visitOriginal() {
         
     }
+    
+    function gotoURL() {
+        var j=prompt('Enter site address','http://');
+        document.location='/' + j;        
+    }
+    
 //    function showHelp() {
 //        $( "#dialog-message" ).dialog({
 //                width: '75%',
@@ -440,7 +446,7 @@ if (!document.all) document.captureEvents(Event.MOUSEUP);
     <div id="_Top" class="menu">
             
         <ul>
-            <li><a href="javascript:alert('Go to URL: Feature not complete');" class="tooltip"><img width="48px" height="48px" src="/static/icons/link.svg" alt="Go..."/><span>Go...</span></a></li>
+            <li><a href="javascript:gotoURL();" class="tooltip"><img width="48px" height="48px" src="/static/icons/link.svg" alt="Go..."/><span>Go...</span></a></li>
             <li><a href="javascript:toggleSpeech()" class="tooltip"><img width="48px" height="48px" src="/static/icons/speak.svg" alt="Speak"/><span>Toggle Speech</span></a></li>
             <li><a href="javascript:addImagesForSelection();" class="tooltip"><img width="48px" height="48px" src="/static/icons/picture.svg" alt="Images"/><span>Images</span></a></li>
             <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/colors.svg" title="Theme"/><span>Theme</span></a>
