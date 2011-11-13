@@ -1,6 +1,8 @@
 Cortexit TODO
 
--Break on: </li>, </tr>, </hr>
+
+-Fix cortexifyURL().. 
+    Example: wikipedia links are not absolute-ized
 
 -Demo Video
 

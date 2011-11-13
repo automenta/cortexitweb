@@ -1,0 +1,48 @@
+/* 
+    Document   : terminal-green
+    Created on : Nov 10, 2010, 6:15:36 AM
+    Author     : me
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+@import url("default-black.css");
+@import url(http://fonts.googleapis.com/css?family=Love+Ya+Like+A+Sister);
+
+#_Panel {
+    color: #eee;
+    font-family: 'Love Ya Like A Sister', cursive;
+    background: url('/static/themes/image/chalkboard.png') no-repeat;
+    background-size: 100%;
+    background-color: transparent;
+}
+
+#_Panel a {
+    color: #fff;
+    font-family: 'Love Ya Like A Sister', cursive;
+    font-weight: bold;
+}
+
+#_Content {
+    margin: 65px;   
+}
+
+body {
+   background-color: black;
+}
+
+Status {
+    color: white;
+}
+
+
+#Status a {
+    font-family: 'Love Ya Like A Sister', cursive;
+}
+#_Font a {
+    font-family: 'Love Ya Like A Sister', cursive;
+}
