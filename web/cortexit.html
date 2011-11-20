@@ -73,7 +73,7 @@
             prev.innerHTML = '&nbsp;';
         }
         else {
-            prev.innerHTML = '<a href="javascript:goPrevious()"><img src="/static/icons/left.svg" height="32px" width="32px"/></a>';
+            prev.innerHTML = '<a href="javascript:goPrevious()"><img src="/static/icons/left.png" height="32px" width="32px"/></a>';
         }
 
         var next = document.getElementById("_Next");
@@ -82,7 +82,7 @@
         }
         else {
             //next.innerHTML = '<button onClick="goNext();">----&gt;</button>';
-            next.innerHTML = '<a href="javascript:goNext()"><img src="/static/icons/right.svg" height="32px" width="32px"/></a>';
+            next.innerHTML = '<a href="javascript:goNext()"><img src="/static/icons/right.png" height="32px" width="32px"/></a>';
         }
         updateFonts();
         
@@ -399,10 +399,11 @@ if (!document.all) document.captureEvents(Event.MOUSEUP);
     <div id="_Top" class="menu">
             
         <ul>
-            <li><a href="javascript:gotoURL();" class="tooltip"><img width="48px" height="48px" src="/static/icons/link.svg" alt="Go..."/><span>Go...</span></a></li>
-            <li><a href="javascript:toggleSpeech()" class="tooltip"><img width="48px" height="48px" src="/static/icons/speak.svg" alt="Speak"/><span>Toggle Speech</span></a></li>
-            <li><a href="javascript:addImagesForSelection();" class="tooltip"><img width="48px" height="48px" src="/static/icons/picture.svg" alt="Images"/><span>Images</span></a></li>
-            <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/colors.svg" title="Theme"/><span>Theme</span></a>
+            <li><a href="javascript:gotoURL();" class="tooltip"><img width="48px" height="48px" src="/static/icons/link.png" alt="Go..."/><span>Go...</span></a></li>
+            <li><a href="javascript:alert('Playback: Feature not complete yet.');" class="tooltip"><img width="48px" height="48px" src="/static/icons/play.png" alt="Play"/><span>Auto-play</span></a></li>
+            <li><a href="javascript:toggleSpeech()" class="tooltip"><img width="48px" height="48px" src="/static/icons/speak.png" alt="Speak"/><span>Toggle Speech</span></a></li>
+            <li><a href="javascript:addImagesForSelection();" class="tooltip"><img width="48px" height="48px" src="/static/icons/picture.png" alt="Images"/><span>Images</span></a></li>
+            <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/colors.png" title="Theme"/><span>Theme</span></a>
                 <ul>
                     <li><a href="javascript:setTheme('default-black')">White on Black</a></li>
                     <li><a href="javascript:setTheme('default-white')">Black on White</a></li>
@@ -412,9 +413,9 @@ if (!document.all) document.captureEvents(Event.MOUSEUP);
                     <li><a href="javascript:setTheme('chalkboard')">Chalkboard</a></li>
                 </ul>
             </li>
-            <li><a href="javascript:alert('Translate: Feature not complete');" class="tooltip"><img width="48px" height="48px" src="/static/icons/earth.svg" alt="Translate"/><span>Translate</span></a>
-            <li><a href="javascript:alert('Edit and Share: Feature not complete');" class="tooltip"><img width="48px" height="48px" src="/static/icons/edit.svg" alt="Edit and Share"/><span>Edit and Share</span></a>
-            <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/question.svg" alt="Help"/><span>Help</span></a>
+            <li><a href="javascript:alert('Translate: Feature not complete');" class="tooltip"><img width="48px" height="48px" src="/static/icons/earth.png" alt="Translate"/><span>Translate</span></a>
+            <li><a href="javascript:alert('Edit and Share: Feature not complete');" class="tooltip"><img width="48px" height="48px" src="/static/icons/edit.png" alt="Edit and Share"/><span>Edit and Share</span></a>
+            <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/question.png" alt="Help"/><span>Help</span></a>
                 <ul>
                     <li><a href="http://cortexit.org/cortexit.org/static/about.html">What is Cortexit?</a></li>
                     <li><a href="http://cortexit.org/cortexit.org/static/privacy.html">Privacy Policy</a></li>
@@ -452,13 +453,13 @@ if (!document.all) document.captureEvents(Event.MOUSEUP);
                     &nbsp;
                 </td>
                 <td width="10%" align="left">
-                    <a href="javascript:fontSmaller()"><img src="/static/icons/minus.svg" height="32px" width="32px" title="Smaller Font"/></a>
+                    <a href="javascript:fontSmaller()"><img src="/static/icons/minus.png" height="32px" width="32px" title="Smaller Font"/></a>
                 </td>
                 <td width="25%" align="center" id="_Font" >                    
                     <a class="tooltipAbove">&nbsp; Abc &nbsp;<span>Mousewheel or up/down key to adjust font size</span></a>
                 </td>
                 <td width="10%" align="right">
-                    <a href="javascript:fontLarger()"><img src="/static/icons/plus.svg" height="32px" width="32px" title="Larger Font"/></a>
+                    <a href="javascript:fontLarger()"><img src="/static/icons/plus.png" height="32px" width="32px" title="Larger Font"/></a>
                 </td>
             </tr>
         </table>
