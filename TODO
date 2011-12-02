@@ -9,6 +9,9 @@ Cortexit TODO
 -Speak
     --Make speech draggable/resizable?
 
+-Display Multiple Sentences 
+	options: # lookbehind/lookahead
+
 -Images
     --Make image windows http://jqueryui.com/demos/draggable/ + resizable ?
     --Scroll to new Image Searches
