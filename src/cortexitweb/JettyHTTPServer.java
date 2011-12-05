@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.UnknownHostException;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -151,26 +152,21 @@ public class JettyHTTPServer {
                 }
                 
             }
-
-            public void writeRemotePage(PrintWriter out, String path) throws Exception {
-
-                URL target;
-                try {
-                    target = new URL(path);
-                } catch (MalformedURLException e) {
-                    target = new URL("http://" + path);
+            
+            public void writePage(PrintWriter out, URL target, Document doc) throws Exception {
+                final String title;
+                if (target!=null) {
+                    title = doc.getElementsByTag("title").first().text();
+                    Elements links = doc.select("a[href]");
+                    for (Element e : links) {
+                        e.prepend("{{a href=\"" + cortexifyURL(target.getHost(), escape(e.attr("href"))) + "\" target=\"_blank\"}}");
+                        e.append("{{/a}}");
+                    }
                 }
-
-                //Logger.getLogger(CortexitWeb.class.toString()).info("Loading remote: " + target + " : " + path);
-
-                Document doc = Jsoup.parse(target, requestTimeoutMS);
-                String title = doc.getElementsByTag("title").first().text();
-
-                Elements links = doc.select("a[href]");
-                for (Element e : links) {
-                    e.prepend("{{a href=\"" + cortexifyURL(target.getHost(), escape(e.attr("href"))) + "\" target=\"_blank\"}}");
-                    e.append("{{/a}}");
+                else {
+                    title = "";
                 }
+                
                 Elements imgs = doc.select("img[src]"); 
                 for (Element e : imgs) {
                     e.prepend("{{img src=\"" + e.attr("src") + "\"/}}");
@@ -214,6 +210,22 @@ public class JettyHTTPServer {
                 commands.append("setOriginal(\"" + target + "\");\n");
 
                 writeCortexitPage(out, title, commands.toString());
+                
+            }
+
+            public void writeRemotePage(PrintWriter out, String path) throws Exception {
+
+                URL target;
+                try {
+                    target = new URL(path);
+                } catch (MalformedURLException e) {
+                    target = new URL("http://" + path);
+                }
+
+                //Logger.getLogger(CortexitWeb.class.toString()).info("Loading remote: " + target + " : " + path);
+
+                Document doc = Jsoup.parse(target, requestTimeoutMS);
+                writePage(out, target, doc);
             }
 
 //            public String getCortexitPage(String title, String frameCommands) {
@@ -254,13 +266,31 @@ public class JettyHTTPServer {
                 
                 
                 String request = r.getRequestURI();
+
                 
                 if (request.equals("/favicon.ico")) {
                     //...
                 } else {
                     response.setContentType("text/html");
-                    response.setStatus(HttpServletResponse.SC_OK);
-                    respondCortexit(request, response.getWriter());
+                    response.setStatus(HttpServletResponse.SC_OK);                                        
+                    
+                    String a = r.getParameter("text");
+                    if (a!=null) {
+                        String u = URLDecoder.decode(a, "UTF-8");
+                        
+                        PrintWriter out = response.getWriter();
+                        writeCortexitTemplate(out);
+                        Document doc = Jsoup.parse(u);
+                        try {
+                            writePage(out, null, doc);
+                        } catch (Exception ex) {
+                            Logger.getLogger(JettyHTTPServer.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else {                    
+                        respondCortexit(request, response.getWriter());
+                    }
+                    
                     ((Request)r).setHandled(true);
                 }
 
