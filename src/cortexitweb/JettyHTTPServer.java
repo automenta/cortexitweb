@@ -92,6 +92,14 @@ public class JettyHTTPServer {
         return escape(s).replace("\n", " ").trim();
     }
     
+    static URL defaultTarget;
+    static {
+        try {
+             defaultTarget = new URL("http://cortexit.org");
+        }   
+        catch (Exception e) { }    
+    }
+    
     public static void main(String[] args) throws Exception {
         Properties p = new Properties();
         p.load(new FileInputStream("cortexit.ini"));
@@ -153,18 +161,13 @@ public class JettyHTTPServer {
                 
             }
             
-            public void writePage(PrintWriter out, URL target, Document doc) throws Exception {
-                final String title;
+            public void writePage(PrintWriter out, URL target, String title, Document doc) throws Exception {
                 if (target!=null) {
-                    title = doc.getElementsByTag("title").first().text();
                     Elements links = doc.select("a[href]");
                     for (Element e : links) {
                         e.prepend("{{a href=\"" + cortexifyURL(target.getHost(), escape(e.attr("href"))) + "\" target=\"_blank\"}}");
                         e.append("{{/a}}");
                     }
-                }
-                else {
-                    title = "";
                 }
                 
                 Elements imgs = doc.select("img[src]"); 
@@ -205,7 +208,10 @@ public class JettyHTTPServer {
                         //...
                     }
                     //TODO proper string escaping.. this is a HACK!
-                    commands.append("addFrame(\"" + frameEscape(s) + "\");\n");
+                    commands.append("_f(\"" + frameEscape(s) + "\");\n");
+                }
+                if (target==null) {
+                    target = defaultTarget;
                 }
                 commands.append("setOriginal(\"" + target + "\");\n");
 
@@ -220,12 +226,14 @@ public class JettyHTTPServer {
                     target = new URL(path);
                 } catch (MalformedURLException e) {
                     target = new URL("http://" + path);
-                }
+                }                    
+
 
                 //Logger.getLogger(CortexitWeb.class.toString()).info("Loading remote: " + target + " : " + path);
 
                 Document doc = Jsoup.parse(target, requestTimeoutMS);
-                writePage(out, target, doc);
+                String title = doc.getElementsByTag("title").first().text();
+                writePage(out, target, title, doc);
             }
 
 //            public String getCortexitPage(String title, String frameCommands) {
@@ -256,7 +264,7 @@ public class JettyHTTPServer {
                 b.write("showFrame(currentFrame);");
                 
                 b.write("</script>");
-                b.write("<title>Cortexit - " + title + "</title>");
+                b.write("<title>Cortexit" + ((title!=null) ? (" - " + title) : "") + "</title>");                    
                 b.write("</html>");
                 
             }
@@ -274,15 +282,33 @@ public class JettyHTTPServer {
                     response.setContentType("text/html");
                     response.setStatus(HttpServletResponse.SC_OK);                                        
                     
+                    String url = r.getParameter("url");
+                    if (url!=null) {
+                        url = URLDecoder.decode(url, "UTF-8");
+                    }
+                    else {
+                        url = "http://cortexit.org";
+                    }
+                    
                     String a = r.getParameter("text");
                     if (a!=null) {
-                        String u = URLDecoder.decode(a, "UTF-8");
+                        a = URLDecoder.decode(a, "UTF-8");
                         
                         PrintWriter out = response.getWriter();
                         writeCortexitTemplate(out);
-                        Document doc = Jsoup.parse(u);
+                        Document doc = Jsoup.parse(a);
+                        
+                        //TODO clean this and merge with above code for obtaining string of url
+                        URL u;
                         try {
-                            writePage(out, null, doc);
+                            u = new URL(url);
+                        }
+                        catch (MalformedURLException e) {
+                            u = defaultTarget;
+                        }
+                                
+                        try {
+                            writePage(out, u, null, doc);
                         } catch (Exception ex) {
                             Logger.getLogger(JettyHTTPServer.class.getName()).log(Level.SEVERE, null, ex);
                         }

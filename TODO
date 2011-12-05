@@ -4,6 +4,8 @@ Cortexit TODO
 -Fix cortexifyURL().. 
     Example: wikipedia links are not absolute-ized
 
+-Disable arrow keys when editing content area
+
 -Demo Video
 
 -Speak
@@ -22,7 +24,6 @@ Cortexit TODO
 
 -PNGs instead of SVGs
 
--Edit and Share
 
 -Go
     --Improve appearance, instead of standard javascript dialog

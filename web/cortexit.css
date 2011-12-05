@@ -205,8 +205,8 @@ a:hover {text-decoration:none;} /*BG color is a must for IE6*/
 a.tooltip span {display:none; padding:2px 3px; margin-left:-70px; margin-top: 0px; width:140px; z-index: 400;}
 a.tooltip:hover span{display:inline; position:absolute; color:#fff;}
 
-a.tooltipAbove span {display:none; margin-left:-200px;  margin-bottom: 60px; width:300px; font-size: 14px; }
-a.tooltipAbove:hover span{display:inline; position:absolute;  color:white;}
+/* a.tooltipAbove span {display:none; margin-left:-200px;  margin-bottom: 60px; width:300px; font-size: 14px; }
+a.tooltipAbove:hover span{display:inline; position:absolute;  color:white;} */
 
 
 .imageSection {
