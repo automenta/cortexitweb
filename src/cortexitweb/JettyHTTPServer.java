@@ -272,7 +272,8 @@ public class JettyHTTPServer {
             public void handle(String target, HttpServletRequest r, HttpServletResponse response, int dispatch)
                 throws IOException, ServletException {
                 
-                
+                r.setCharacterEncoding("UTF-8");
+
                 String request = r.getRequestURI();
 
                 
