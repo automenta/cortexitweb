@@ -4,7 +4,7 @@
 
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" type="text/css" media="all" />
 <link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
 
 
@@ -475,7 +475,7 @@ if (!document.all) document.captureEvents(Event.MOUSEUP);
             <li><a href="javascript:shareIt();" class="tooltip"><img width="48px" height="48px" src="/static/icons/edit.png" alt="Share"/><span>Share</span></a>
             <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/question.png" alt="Help"/><span>Help</span></a>
                 <ul>
-                    <li><a href="javascript:(function(){ var w = screen.width*0.75; var h = screen.height*0.75; var left = (screen.width/2)-(w/2); var top = (screen.height/2)-(h/2); window.open('http://localhost:8182/?url=' + encodeURIComponent(location.href) + '&text=' + encodeURIComponent(window.content.getSelection().toString()),'Cortexit','location=0,status=0,directories=0,menubar=0,toolbar=0,width='+w+',height='+h+',top='+top+',left='+left);})();">Cortexit Bookmarklet</a>
+                    <li><a href="javascript:(function(){ document.body.appendChild(document.createElement('script')).src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js';  document.body.appendChild(document.createElement('script')).src='http://localhost:8182/static/bookmarklet.js'; })();">Cortexit Bookmarklet</a></li>
                     <li><a href="http://cortexit.org/cortexit.org/static/about.html">What is Cortexit?</a></li>
                     <li><a href="http://cortexit.org/cortexit.org/static/privacy.html">Privacy Policy</a></li>
                     <li><a href="http://evariware.com/contact">Contact Us</a></li>

@@ -24,6 +24,11 @@ Cortexit TODO
 
 -PNGs instead of SVGs
 
+-Realtime & Long-term Reading Analytics
+    Words Per Minute, Frames Per Minute
+    Reading Rate By Time-of-day
+    Reading Rate By Site
+    Sentiment Analysis
 
 -Go
     --Improve appearance, instead of standard javascript dialog
