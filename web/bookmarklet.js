@@ -8,17 +8,17 @@ var l = window.getSelection().toString();
 
 var uniqueString = "cortexitPopup";
 
-var w = screen.width * 0.75;
+var w = screen.width * 0.85;
 var h = screen.height * 0.65;
 var le = (screen.width - w) / 2.0;
 var t = 20; //(screen.height - h) / 2.0;
 
 var closer = document.createElement("a");
-closer.innerHTML = 'Close';
+closer.innerHTML = 'OK';
 closer.setAttribute('id', uniqueString + 'X');
 closer.setAttribute('href', "javascript:(function() {var i = document.getElementById(uniqueString + '_'); i.parentNode.removeChild(i); var i = document.getElementById(uniqueString + 'X'); i.parentNode.removeChild(i);})();");
 closer.style.position = 'fixed';
-closer.style.fontSize = '32px';
+closer.style.fontSize = '16px';
 closer.style.top = (t + h) + 'px';
 var cw = 100;
 closer.style.width = cw + 'px';

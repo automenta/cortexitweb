@@ -125,18 +125,13 @@ public class JettyHTTPServer {
             protected void respondCortexit(String request, PrintWriter out)  {
                 writeCortexitTemplate(out);
                 
-                if ((request.length() == 0) || (request.equals("/"))) {
-                    
-                    //TODO cache this
-                    StringBuffer homepageBuffer = new StringBuffer();
+                if ((request.length() == 0) || (request.equals("/"))) {                    
                     try {
-                        readFileInto("./web/home.html", homepageBuffer);
-                    } catch (Exception ex1) {
-                        Logger.getLogger(JettyHTTPServer.class.getName()).log(Level.SEVERE, null, ex1);
+                        writeLocalPage(out, "./web/about.html");
                     }
-
-                    writeCortexitPage(out, "Cortexit", "addFrame(\"" + frameEscape(homepageBuffer.toString()) + "\");");
-
+                    catch (Exception e) {
+                        System.err.println(e);
+                    }
                 }
                 else {
                     try {
@@ -219,6 +214,17 @@ public class JettyHTTPServer {
                 
             }
 
+            public void writeLocalPage(PrintWriter out, String path) throws Exception {
+            
+                StringBuffer sb = new StringBuffer();
+                readFileInto(path, sb);
+                
+                Document doc = Jsoup.parse(sb.toString());
+                String title = doc.getElementsByTag("title").first().text();
+                writePage(out, null, path, doc);
+                
+            }
+            
             public void writeRemotePage(PrintWriter out, String path) throws Exception {
 
                 URL target;
@@ -276,9 +282,13 @@ public class JettyHTTPServer {
 
                 String request = r.getRequestURI();
 
+                final PrintWriter out = response.getWriter();
                 
                 if (request.equals("/favicon.ico")) {
-                    //...
+                    response.setContentType("text/jpg");
+                    response.setStatus(HttpServletResponse.SC_OK);                                        
+                    readFileInto(out, "./web/favicon.ico");
+                    ((Request)r).setHandled(true);
                 } else {
                     response.setContentType("text/html");
                     response.setStatus(HttpServletResponse.SC_OK);                                        
@@ -293,9 +303,13 @@ public class JettyHTTPServer {
                     
                     String a = r.getParameter("text");
                     if (a!=null) {
-                        a = URLDecoder.decode(a, "UTF-8");
+                        try {
+                            a = URLDecoder.decode(a, "UTF-8");
+                        }
+                        catch (IllegalArgumentException e) {
+                            //a = a;
+                        }
                         
-                        PrintWriter out = response.getWriter();
                         writeCortexitTemplate(out);
                         Document doc = Jsoup.parse(a);
                         
