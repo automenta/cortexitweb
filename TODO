@@ -1,18 +1,27 @@
 Cortexit TODO
 
+-Usage Limits
+    Max Downloaded File Size
+    Max # of Frames
+    Max Connections per Visitor per Amount of Time
+
+-Fix Popup "OK" Button to replace the 'X' in upper right
+
+-Improve data encoding
 
 -Fix cortexifyURL().. 
     Example: wikipedia links are not absolute-ized
 
--Disable arrow keys when editing content area
-
--Demo Video
-
 -Speak
     --Make speech draggable/resizable?
 
+-Auto play w/ Popup Speed Control
+
+
 -Display Multiple Sentences 
 	options: # lookbehind/lookahead
+
+-Top Buttons should slide top, mostly hiding, when not mouse-over
 
 -Images
     --Make image windows http://jqueryui.com/demos/draggable/ + resizable ?
@@ -22,8 +31,6 @@ Cortexit TODO
 -Return Button ('X' in top-right)
     --Specified by server: setReturnPage(url)
 
--PNGs instead of SVGs
-
 -Realtime & Long-term Reading Analytics
     Words Per Minute, Frames Per Minute
     Reading Rate By Time-of-day
@@ -31,11 +38,10 @@ Cortexit TODO
     Sentiment Analysis
 
 -Go
-    --Improve appearance, instead of standard javascript dialog
+    --Include a topic tree to select feeds from
+        --RSS reading
 
 -Translate
-
--Bookmarklet
 
 -Ads
 

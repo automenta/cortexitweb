@@ -37,7 +37,7 @@ import org.mortbay.jetty.handler.ResourceHandler;
  */
 public class JettyHTTPServer {
 
-    final static char[] bytes = new char[4096];
+    final static char[] bytes = new char[4096*16];
     static String cortexitHost;
     static String staticPath;
     static int maxSentenceLength = 128;
@@ -62,28 +62,30 @@ public class JettyHTTPServer {
             }
         }
 
-        return cortexitHost + "/" + url;
+        //return cortexitHost + "/" + url;
+        return url;
+        
     }
-    
+
     public static void readFileInto(String path, StringBuffer b) throws IOException {
         BufferedReader fr = new BufferedReader(new FileReader(path));
         while (fr.ready()) {
-            b.append(fr.readLine());            
+            b.append(fr.readLine());
         }
         fr.close();
     }
 
     public static void readFileInto(PrintWriter out, String staticFile) throws IOException {
         FileReader fr = new FileReader(staticFile);
-        
+
         while (fr.ready()) {
             int read = fr.read(bytes, 0, bytes.length);
-            out.write(bytes, 0 ,read);
+            out.write(bytes, 0, read);
             out.flush();
         }
         fr.close();
     }
-    
+
     public static String escape(String s) {
         return s.replace("\"", "\\\"");
     }
@@ -91,15 +93,15 @@ public class JettyHTTPServer {
     public static String frameEscape(String s) {
         return escape(s).replace("\n", " ").trim();
     }
-    
     static URL defaultTarget;
+
     static {
         try {
-             defaultTarget = new URL("http://cortexit.org");
-        }   
-        catch (Exception e) { }    
+            defaultTarget = new URL("http://cortexit.org");
+        } catch (Exception e) {
+        }
     }
-    
+
     public static void main(String[] args) throws Exception {
         Properties p = new Properties();
         p.load(new FileInputStream("cortexit.ini"));
@@ -110,8 +112,8 @@ public class JettyHTTPServer {
         fileHandler.setResourceBase("./web");
         fileHandler.addHandler(new ResourceHandler());
         fileHandler.setContextPath("/static");
-        
-        AbstractHandler handler=new AbstractHandler() {
+
+        AbstractHandler handler = new AbstractHandler() {
 
             private void writeCortexitTemplate(PrintWriter out) {
                 try {
@@ -121,55 +123,82 @@ public class JettyHTTPServer {
                     Logger.getLogger(JettyHTTPServer.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
-            protected void respondCortexit(String request, PrintWriter out)  {
+
+            protected void respondCortexit(String request, PrintWriter out) {
                 writeCortexitTemplate(out);
-                
-                if ((request.length() == 0) || (request.equals("/"))) {                    
-                    try {
-                        writeLocalPage(out, "./web/about.html");
-                    }
-                    catch (Exception e) {
-                        System.err.println(e);
-                    }
-                }
-                else {
-                    try {
-                        writeRemotePage(out, request.substring(1));
-                    }
-                    catch (UnknownHostException x) {                        
-                        final String y = "Unknown site: " + request.substring(1);
-                        writeCortexitPage(out, "Cortexit: Page Not Found", "addFrame(\"" + frameEscape(y) + "\");");                        
-                    }
-                    catch (Exception e) {
-                        //TODO write a cortexit page with error
-                        //out.println(e.toString());
-                        //e.printStackTrace(out);
-                        
-                        StringBuffer x = new StringBuffer(e.toString() + ":");
-                        for (final StackTraceElement s : e.getStackTrace()) {
-                            x.append(s.toString() + " ");
+
+                try {
+                    if ((request.length() == 0) || (request.equals("/"))) {
+                        writeLocalPage(out, "./web/about.html", "About Cortexit", false);
+                    } else if (request.equals("/bookmarklet")) {
+                        writeLocalPage(out, "./web/bookmarklet.html", "Cortexit Bookmarklet", false);
+                    } else if (request.equals("/privacy")) {
+                        writeLocalPage(out, "./web/privacy.html", "Privacy Policy", false);
+                    } else if (request.equals("/contact")) {
+                        writeLocalPage(out, "./web/contact.html", "Contact Us", false);
+                    } else if (request.equals("/support")) {
+                        writeLocalPage(out, "./web/support.html", "Support", false);
+                    } else if (request.equals("/go")) {
+                        writeLocalPage(out, "./web/go.html", "Go", false);
+                    } else {
+                        try {
+                            writeRemotePage(out, request.substring(1));
+                        } catch (UnknownHostException x) {
+                            final String y = "Unknown site: " + request.substring(1);
+                            writeCortexitPage(out, "Cortexit: Page Not Found", "addFrame(\"" + frameEscape(y) + "\");");
                         }
-                        writeCortexitPage(out, "Cortexit: Error", "addFrame(\"" + frameEscape(x.toString()) + "\");");
                     }
+                } catch (Exception e) {
+                    //TODO write a cortexit page with error
+                    //out.println(e.toString());
+                    //e.printStackTrace(out);
+
+                    StringBuffer x = new StringBuffer(e.toString() + ":");
+                    for (final StackTraceElement s : e.getStackTrace()) {
+                        x.append(s.toString() + " ");
+                    }
+                    writeCortexitPage(out, "Cortexit: Error", "addFrame(\"" + frameEscape(x.toString()) + "\");");
                 }
+
+            }
+            public void writePageRaw(PrintWriter out, URL target, String title, Document doc) throws Exception {
+
+                StringBuffer commands = new StringBuffer();
+
+                commands.append("_f(\"" + frameEscape(doc.toString()) + "\");\n");
+                
+                if (target == null) {
+                    target = defaultTarget;
+                }
+                
+                commands.append("setOriginal(\"" + target + "\");\n");
+
+                writeCortexitPage(out, title, commands.toString());
                 
             }
-            
-            public void writePage(PrintWriter out, URL target, String title, Document doc) throws Exception {
-                if (target!=null) {
+
+            public void writePageCleaned(PrintWriter out, URL target, String title, Document doc) throws Exception {
+                
+                if (target != null) {
                     Elements links = doc.select("a[href]");
                     for (Element e : links) {
-                        e.prepend("{{a href=\"" + cortexifyURL(target.getHost(), escape(e.attr("href"))) + "\" target=\"_blank\"}}");
+                        e.prepend("{{a href=\"" + escape(cortexifyURL(target.getHost(), escape(e.attr("href")))) + "\" target=\"_blank\"}}");
                         e.append("{{/a}}");
                     }
                 }
-                
-                Elements imgs = doc.select("img[src]"); 
+                else {
+                    Elements links = doc.select("a[href]");
+                    for (Element e : links) {
+                        e.prepend("{{a href=\"" + links.attr("href") + "\" target=\"_blank\"}}");
+                        e.append("{{/a}}");
+                    }                    
+                }
+
+                Elements imgs = doc.select("img[src]");
                 for (Element e : imgs) {
                     e.prepend("{{img src=\"" + e.attr("src") + "\"/}}");
                 }
-                final String liBreak = "{{li}}";
+                final String liBreak = "{{br}}";
                 for (Element e : doc.select("li")) {
                     e.append(liBreak);
                 }
@@ -182,7 +211,7 @@ public class JettyHTTPServer {
                 for (Element e : doc.select("br")) {
                     e.append(liBreak);
                 }
-                
+
 
                 StringBuffer commands = new StringBuffer();
 
@@ -205,26 +234,30 @@ public class JettyHTTPServer {
                     //TODO proper string escaping.. this is a HACK!
                     commands.append("_f(\"" + frameEscape(s) + "\");\n");
                 }
-                if (target==null) {
+                if (target == null) {
                     target = defaultTarget;
                 }
                 commands.append("setOriginal(\"" + target + "\");\n");
 
                 writeCortexitPage(out, title, commands.toString());
-                
+
             }
 
-            public void writeLocalPage(PrintWriter out, String path) throws Exception {
-            
+            public void writeLocalPage(PrintWriter out, String path, String title, boolean filtered) throws Exception {
+
                 StringBuffer sb = new StringBuffer();
                 readFileInto(path, sb);
-                
+
                 Document doc = Jsoup.parse(sb.toString());
-                String title = doc.getElementsByTag("title").first().text();
-                writePage(out, null, path, doc);
                 
+                if (filtered)
+                    writePageCleaned(out, null, path, doc);
+                else
+                    writePageRaw(out, null, title, doc);
+                    
+
             }
-            
+
             public void writeRemotePage(PrintWriter out, String path) throws Exception {
 
                 URL target;
@@ -232,14 +265,14 @@ public class JettyHTTPServer {
                     target = new URL(path);
                 } catch (MalformedURLException e) {
                     target = new URL("http://" + path);
-                }                    
+                }
 
 
                 //Logger.getLogger(CortexitWeb.class.toString()).info("Loading remote: " + target + " : " + path);
 
                 Document doc = Jsoup.parse(target, requestTimeoutMS);
                 String title = doc.getElementsByTag("title").first().text();
-                writePage(out, target, title, doc);
+                writePageCleaned(out, target, title, doc);
             }
 
 //            public String getCortexitPage(String title, String frameCommands) {
@@ -264,90 +297,86 @@ public class JettyHTTPServer {
 
                 writePageEnd(b, title);
             }
+
             public void writePageEnd(PrintWriter b, String title) {
 
                 b.write("currentFrame = 0;");
                 b.write("showFrame(currentFrame);");
-                
+
                 b.write("</script>");
-                b.write("<title>Cortexit" + ((title!=null) ? (" - " + title) : "") + "</title>");                    
+                b.write("<title>Cortexit" + ((title != null) ? (" - " + title) : "") + "</title>");
                 b.write("</html>");
-                
+
             }
-            
+
             public void handle(String target, HttpServletRequest r, HttpServletResponse response, int dispatch)
-                throws IOException, ServletException {
-                
+                    throws IOException, ServletException {
+
                 r.setCharacterEncoding("UTF-8");
 
                 String request = r.getRequestURI();
 
                 final PrintWriter out = response.getWriter();
-                
+
                 if (request.equals("/favicon.ico")) {
                     response.setContentType("text/jpg");
-                    response.setStatus(HttpServletResponse.SC_OK);                                        
+                    response.setStatus(HttpServletResponse.SC_OK);
                     readFileInto(out, "./web/favicon.ico");
-                    ((Request)r).setHandled(true);
+                    ((Request) r).setHandled(true);
                 } else {
                     response.setContentType("text/html");
-                    response.setStatus(HttpServletResponse.SC_OK);                                        
-                    
+                    response.setStatus(HttpServletResponse.SC_OK);
+
                     String url = r.getParameter("url");
-                    if (url!=null) {
+                    if (url != null) {
                         url = URLDecoder.decode(url, "UTF-8");
-                    }
-                    else {
+                    } else {
                         url = "http://cortexit.org";
                     }
-                    
+
                     String a = r.getParameter("text");
-                    if (a!=null) {
+                    if (a != null) {
                         try {
                             a = URLDecoder.decode(a, "UTF-8");
-                        }
-                        catch (IllegalArgumentException e) {
+                        } catch (IllegalArgumentException e) {
                             //a = a;
                         }
-                        
+
                         writeCortexitTemplate(out);
                         Document doc = Jsoup.parse(a);
-                        
+
                         //TODO clean this and merge with above code for obtaining string of url
                         URL u;
                         try {
                             u = new URL(url);
-                        }
-                        catch (MalformedURLException e) {
+                        } catch (MalformedURLException e) {
                             u = defaultTarget;
                         }
-                                
+
                         try {
-                            writePage(out, u, null, doc);
+                            writePageCleaned(out, u, null, doc);
                         } catch (Exception ex) {
                             Logger.getLogger(JettyHTTPServer.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    }
-                    else {                    
+                    } else {
                         respondCortexit(request, response.getWriter());
                     }
-                    
-                    ((Request)r).setHandled(true);
+
+                    ((Request) r).setHandled(true);
                 }
 
             }
         };
-        
+
         Server server = new Server(8182);
- 
+
         HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[] { fileHandler, handler });
-        
+        handlers.setHandlers(new Handler[]{fileHandler, handler});
+
         server.setHandler(handlers);
- 
+
         server.start();
         server.join();
-        
-    }
 
+    }
 }
