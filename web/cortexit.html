@@ -18,7 +18,7 @@
     var currentFrame;
     var speechEnabled = false;
 
-    function enableSpeech(line) {
+    function enableVozmeSpeech(line) {
         speechEnabled = true;
 
         var speech = document.getElementById("_Speech");
@@ -37,7 +37,7 @@
         speech.innerHTML = '<iframe src="' + speechURL + '" width="350px" height="120px"></iframe>';
     }
     
-    function disableSpeech() {
+    function disableVozmeSpeech() {
         speechEnabled = false;
         var speech = document.getElementById("_Speech");
         $('#_Speech').fadeOut('slow', function() {
@@ -45,18 +45,50 @@
         });
     }
 
-    function toggleSpeech() {
+    function toggleVozmeSpeech() {
         if (speechEnabled == true) {
-            disableSpeech();
+            disableVozmeSpeech();
         }
         else {
-            enableSpeech($('#_Content').text());
+            enableVozmeSpeech($('#_Content').text());
         }
+    }
+    
+    function speakSpeech(f) {
+        $.getScript("/static/speak/speakClient.js", function(data, textStatus, jqxhr) {
+            var content = $('#_Content').text();            
+            speak.play(content, {amplitude: 100, wordgap: 5, pitch: 25, speed: 200}, f );
+        });
+    }
+    
+      var stopAutospeech = false;
+    function startSpeakAutoSpeech() {
+        stopAutospeech = false;
+        $('#speaker_icon').attr('src', '/static/icons/sound_playing.png');
+        
+        if (nextID!=null)
+            speakSpeech( function() { if (!stopAutospeech) goNext( function() { if (!stopAutospeech) startSpeakAutoSpeech(); });  } );
+        else
+            speakSpeech( function() { stopSpeakAutoSpeech();  } );
+    }
+    function stopSpeakAutoSpeech() {
+        stopAutospeech = true;
+        $('#speaker_icon').attr('src', '/static/icons/simplistica/sound.png');
+        $('#audio').html('');
+    }
+    
+    function goNextExplicit() {
+        stopSpeakAutoSpeech();
+        goNext();
+    }
+    function goPreviousExplicit() {
+        stopSpeakAutoSpeech();
+        goPrevious();
     }
 
     function showFrame(f) {
         
-        disableSpeech();
+        disableVozmeSpeech();
 
         var content = document.getElementById("_Content");
         content.style.opacity = 0;
@@ -453,7 +485,14 @@ if (!document.all) document.captureEvents(Event.MOUSEUP);
                     <li><a href="javascript:setMode()">Three Words</a></li>
                 </ul>
             </li>
-            <li><a href="javascript:toggleSpeech()" class="tooltip"><img width="48px" height="48px" src="/static/icons/speak.png" alt="Speak"/><span>Toggle Speech</span></a></li>
+            <li><a href="#" class="tooltip"><img id="speaker_icon" width="48px" height="48px" src="/static/icons/speak.png" alt="Speak"/><span>Speech</span></a>
+                <ul>
+                    <!--<li><a href="javascript:speakSpeech(function() {})">Speak.js Speech (once)</a></li>
+                    <li><a href="javascript:startSpeakAutoSpeech()">Start Speak.js Autoplay</a></li>
+                    <li><a href="javascript:stopSpeakAutoSpeech()">Stop</a></li>                    -->
+                    <li><a href="javascript:toggleVozmeSpeech()">Toggle VozMe Speech</a></li>
+                </ul>
+            </li> 
             <li><a href="javascript:addImagesForSelection();" class="tooltip"><img width="48px" height="48px" src="/static/icons/picture.png" alt="Images"/><span>Images</span></a></li>
             <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/colors.png" title="Theme"/><span>Theme</span></a>
                 <ul>
@@ -535,19 +574,7 @@ if (!document.all) document.captureEvents(Event.MOUSEUP);
     </div>
 
 </body>
-<script type="text/javascript">
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-27001220-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
 <!-- <link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" /> -->
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=[PROFILE ID]"></script>

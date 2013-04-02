@@ -1,2 +1,0 @@
-host http://localhost:8182
-static http://localhost:8183staticPath file:///work/cortexitweb/web
