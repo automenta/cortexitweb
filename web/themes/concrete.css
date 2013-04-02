@@ -17,6 +17,7 @@
     color: #D282F2;
     font-family: 'Gochi Hand', cursive;
     background-color: transparent;
+    opacity: 0.9;
 }
 
 #_Panel a {
@@ -26,7 +27,7 @@
 
 body {
    background: url('/static/themes/image/concrete.jpg') no-repeat;
-   background-size: 100%;
+   background-size: cover;
 }
 
 Status {

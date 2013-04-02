@@ -15,7 +15,8 @@
 #_Panel {
     color: #E2A848;
     font-family: monospace;
-    background-color: black;
+    background-color: rgba(0,0,0,0.55);
+    
     border: 5px solid green;
 }
 

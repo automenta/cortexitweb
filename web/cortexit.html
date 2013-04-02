@@ -177,6 +177,7 @@
         updateFont( document.getElementById("_Content") );
         updateFont( document.getElementById("_TextZoom") );       
         updateFont( document.getElementById("_GoInput") );  //TODO this is a hack, use JQuery selector for all input-box classes. see go.html
+        updateFont( document.getElementById("_GoInputButton") );  //TODO this is a hack, use JQuery selector for all input-box classes. see go.html
     }
 
     function fontLarger() {
@@ -298,7 +299,7 @@
         //TODO filter 'q' for useless prepositions like 'the', 'and', etc
         var selection = selectedText;
         if (selection == '') {
-            alert('Select some text with which to find images.');
+            alert('Select some text to find images.');
             return;
         }
 
@@ -478,7 +479,10 @@ if (!document.all) document.captureEvents(Event.MOUSEUP);
             
         <ul>
             <li><a href="/go" class="tooltip"><img width="48px" height="48px" src="/static/icons/link.png" alt="Go..."/><span>Go...</span></a></li>
+            <!--
             <li><a href="/support" class="tooltip"><img width="48px" height="48px" src="/static/icons/play.png" alt="Play"/><span>Auto-play</span></a></li>
+            -->
+            <!--
             <li><a href="/support" class="tooltip"><img width="48px" height="48px" src="/static/icons/mode.png" alt="Mode"/><span>Mode</span></a>
                 <ul>
                     <li><a href="javascript:setMode()">One Sentence</a></li>
@@ -488,6 +492,7 @@ if (!document.all) document.captureEvents(Event.MOUSEUP);
                     <li><a href="javascript:setMode()">Three Words</a></li>
                 </ul>
             </li>
+            -->
             <li><a href="#" class="tooltip"><img id="speaker_icon" width="48px" height="48px" src="/static/icons/speak.png" alt="Speak"/><span>Speech</span></a>
                 <ul>
                     <li><a href="javascript:speakSpeech(function() {})">Speak.js Speech (once)</a></li>
@@ -507,7 +512,9 @@ if (!document.all) document.captureEvents(Event.MOUSEUP);
                     <li><a href="javascript:setTheme('chalkboard')">Chalkboard</a></li>
                 </ul>
             </li>
+            <!--
             <li><a href="/support" class="tooltip"><img width="48px" height="48px" src="/static/icons/earth.png" alt="Translate"/><span>Translate</span></a>
+            -->
             <li><a href="javascript:toggleEdit();" class="tooltip"><img width="48px" height="48px" src="/static/icons/edit.png" alt="Edit"/><span>Edit</span></a>
             <li><a href="javascript:shareIt();" class="tooltip"><img width="48px" height="48px" src="/static/icons/share.png" alt="Share"/><span>Share</span></a>
             <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/question.png" alt="Help"/><span>Help</span></a>
