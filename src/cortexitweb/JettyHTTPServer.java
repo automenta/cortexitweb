@@ -13,6 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,11 +39,10 @@ import org.mortbay.jetty.handler.ResourceHandler;
 public class JettyHTTPServer {
 
     final static char[] bytes = new char[4096*16];
-    static String cortexitHost;
-    static String staticPath;
     static int maxSentenceLength = 128;
     static int requestTimeoutMS = 8000;
     static int backlog = 64;
+    public static int PORT = 8182;
 
     public static String cortexifyURL(final String host, String url) {
         URL u;
@@ -103,10 +103,10 @@ public class JettyHTTPServer {
     }
 
     public static void main(String[] args) throws Exception {
-        Properties p = new Properties();
-        p.load(new FileInputStream("cortexit.ini"));
-        cortexitHost = p.getProperty("host");
-        staticPath = p.getProperty("staticPath");
+        /*if (args.length > 1) {
+            PORT = Integer.parseInt(args[1]);
+        }*/
+        
 
         ContextHandler fileHandler = new ContextHandler();
         fileHandler.setResourceBase("./web");
@@ -368,7 +368,7 @@ public class JettyHTTPServer {
             }
         };
 
-        Server server = new Server(8182);
+        Server server = new Server(PORT);
 
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{fileHandler, handler});
