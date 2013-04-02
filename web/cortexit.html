@@ -66,14 +66,14 @@
         stopAutospeech = false;
         $('#speaker_icon').attr('src', '/static/icons/sound_playing.png');
         
-        if (nextID!=null)
+        if (currentFrame<cframes.length-1)
             speakSpeech( function() { if (!stopAutospeech) goNext( function() { if (!stopAutospeech) startSpeakAutoSpeech(); });  } );
         else
             speakSpeech( function() { stopSpeakAutoSpeech();  } );
     }
     function stopSpeakAutoSpeech() {
         stopAutospeech = true;
-        $('#speaker_icon').attr('src', '/static/icons/simplistica/sound.png');
+        $('#speaker_icon').attr('src', '/static/icons/speak.png');
         $('#audio').html('');
     }
     
@@ -147,7 +147,7 @@
             showFrame(currentFrame);
     }
 
-    function goNext() {
+    function goNext(f) {
         if (cframes.length < 2)
             return;
 
@@ -156,6 +156,9 @@
             currentFrame = cframes.length-1;
         else
             showFrame(currentFrame);
+        
+        if (f)
+            f();
     }
 
     function updateFont(c) {
@@ -487,9 +490,9 @@ if (!document.all) document.captureEvents(Event.MOUSEUP);
             </li>
             <li><a href="#" class="tooltip"><img id="speaker_icon" width="48px" height="48px" src="/static/icons/speak.png" alt="Speak"/><span>Speech</span></a>
                 <ul>
-                    <!--<li><a href="javascript:speakSpeech(function() {})">Speak.js Speech (once)</a></li>
+                    <li><a href="javascript:speakSpeech(function() {})">Speak.js Speech (once)</a></li>
                     <li><a href="javascript:startSpeakAutoSpeech()">Start Speak.js Autoplay</a></li>
-                    <li><a href="javascript:stopSpeakAutoSpeech()">Stop</a></li>                    -->
+                    <li><a href="javascript:stopSpeakAutoSpeech()">Stop</a></li>
                     <li><a href="javascript:toggleVozmeSpeech()">Toggle VozMe Speech</a></li>
                 </ul>
             </li> 
@@ -566,6 +569,7 @@ if (!document.all) document.captureEvents(Event.MOUSEUP);
     
     <span id="_Speech">
     </span>
+    <div id="audio" style="display:none"></div>
     
     <div id="share-modal" title="Share...">
         <div id="attbtext"></div>
