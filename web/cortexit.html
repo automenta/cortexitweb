@@ -57,7 +57,7 @@
     function speakSpeech(f) {
         $.getScript("/static/speak/speakClient.js", function(data, textStatus, jqxhr) {
             var content = $('#_Content').text();            
-            speak.play(content, {amplitude: 100, wordgap: 5, pitch: 25, speed: 200}, f );
+            speak.play(content, {amplitude: 100, wordgap: 5, pitch: 25, speed: 175}, f );
         });
     }
     
@@ -510,6 +510,7 @@ if (!document.all) document.captureEvents(Event.MOUSEUP);
                     <li><a href="javascript:setTheme('earthspace')">Earth Space</a></li>
                     <li><a href="javascript:setTheme('concrete')">Concrete</a></li>
                     <li><a href="javascript:setTheme('chalkboard')">Chalkboard</a></li>
+                    <li><a href="javascript:setTheme('anonymous')">Anonymous</a></li>
                 </ul>
             </li>
             <!--
@@ -520,6 +521,7 @@ if (!document.all) document.captureEvents(Event.MOUSEUP);
             <li><a href="#" class="tooltip"><img width="48px" height="48px" src="/static/icons/question.png" alt="Help"/><span>Help</span></a>
                 <ul>
                     <li><a href="/">What is Cortexit?</a></li>
+                    <li><a href="/static/help.svg" target="_blank">How to Use Cortexit</a></li>
                     <li><a href="/bookmarklet">Cortexit Bookmarklet</a></li>
                     <li><a href="/privacy">Privacy Policy</a></li>
                     <li><a href="/contact">Contact Us</a></li>

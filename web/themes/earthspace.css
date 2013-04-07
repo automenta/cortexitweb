@@ -28,7 +28,7 @@
 
 body {
    background: url('/static/themes/image/earth.jpg') no-repeat;
-   background-size: 100%;
+   background-size: cover;
    background-color: transparent;
 }
 

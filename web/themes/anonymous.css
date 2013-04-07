@@ -1,0 +1,32 @@
+@import url("default-black.css");
+@import url(http://fonts.googleapis.com/css?family=Anonymous+Pro:400,700);
+
+
+#_Panel {
+    color: #E2A848;
+    font-family: 'Anonymous Pro', sans-serif;
+    background-color: rgba(0,0,0,0.55);    
+}
+
+#_Panel a {
+    color: #D282F2;
+    font-weight: bold;
+}
+
+body {
+   background: url('/static/themes/image/anonymous-mask.jpg') no-repeat;
+   background-size: cover;
+   background-color: transparent;
+}
+
+Status {
+    color: white;
+}
+
+
+#Status a {
+    font-family: monospace;
+}
+#_Font a {
+    font-family: monospace;
+}
